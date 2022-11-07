@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/06 23:29:15 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/07 21:01:06 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ char	*ft_memmove(char *dst, char *src, size_t len);
 
 char	*sa3ad(char *tmp, char *buf, size_t buf_size);
 
-char	*ft_strchr(const char *s, int c);
+char	*ft_strchr(char *s, int c);
 
 int		checker(char *buf);
 
 char	*saving(char *buf, size_t buf_size);
+
 #endif

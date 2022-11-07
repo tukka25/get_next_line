@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/07 14:56:43 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/07 21:08:45 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,26 @@ char	*ft_strjoin(char *s1, char *s2)
 	str[j] = '\0';
 	free(s2);
 	return (str);
+}
+
+char	*ft_strchr(char *s, int c)
+{
+	int		i;
+	char	*new_string;
+	char	tmp;
+
+	i = 0;
+	tmp = (char ) c;
+	// if (tmp == 0)
+	// 	return ((char *)s + ft_strlen(s));
+	while (s[i] != '\0')
+	{
+		if (s[i] == tmp)
+		{
+			// new_string = (char *) s;
+			return (s + i);
+		}
+		i++;
+	}
+	return (0);
 }

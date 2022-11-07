@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:54 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/07 15:56:33 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/07 23:49:37 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*sa3ad(char *tmp, char *buf, size_t buf_size)
 	i = 0;
 	str = NULL;
 	str = ft_strjoin(tmp, buf);
-	buf = malloc(buf_size * sizeof(char));
+	buf = malloc((buf_size +1) * sizeof(char));
 	return (str);
 }
 
@@ -63,29 +63,40 @@ char	*get_next_line(int fd)
 	char			*tmp;
 
 	tmp = NULL;
-	buf_size = 4;
+	buf_size = 3;
 	buf = malloc(buf_size + 1);
 	tmp = malloc(buf_size + 1);
+	tmp = sa3ad(tmp, buf, buf_size);
 	// printf("at first = %s", buf);
-	j = read(fd, buf, buf_size);
-	buf[j] = '\0';
-	while (j != 0 && checker(buf) == 1)
+	j = 1;
+	// buf[j] = '\0';
+	while (ft_strchr(buf, '\n') == 0 && j != 0)
 	{
-		if (j < buf_size)
-		{
-			buf_size = j;
-			buf = rest_less_than_buffersize(buf, buf_size);
-		}
-		tmp = sa3ad(tmp, buf, buf_size);
+		// printf("%s\n", buf);
+		// if (j > 0)
+		// if (j < buf_size)
+		// 	buf = rest_less_than_buffersize(buf, buf_size);
+		// printf("before buf = %s\n", buf);
+		// printf("before tmp = %s\n", tmp);
 		j = read(fd, buf, buf_size);
 		buf[j] = '\0';
+		tmp = sa3ad(tmp, buf, buf_size);
+		// printf("after buf = %s\n", buf);
+		// printf("after tmp = %s\n", tmp);
+		if (!buf)
+		return (NULL);
+		
+		if (j == -1)
+			return (NULL);
+		printf("%d\n", j);
 	}
-	if (j < buf_size)
-		buf = rest_less_than_buffersize(buf, buf_size);
-	tmp = sa3ad(tmp, buf, buf_size);
+	// printf("%s\n", tmp);
+	// if (j < buf_size)
+	// 	buf = rest_less_than_buffersize(buf, buf_size);
+	// tmp = sa3ad(tmp, buf, buf_size);
 	if (j <= buf_size && j != 0)
 		buf = saving(buf, buf_size);
-		
+		// printf("%s\n", buf);
 	return (tmp);
 }
 
@@ -112,24 +123,28 @@ char	*saving(char *buf, size_t buf_size)
 			}
 			i++;
 		}
+		str[j] = '\0';
 		return (str);
 	}
 	return (buf);
 }
+
 int main()
 {
 	int fd;
-	int i = 0;
+	int i = 2;
 	char str[100];
 	
 	fd = open("f.txt", O_RDONLY);
 		char *line;
 		line = get_next_line(fd);
 		// free(line);
-	while(line != NULL)
+	while(i - 1 > 0)
 	{
 		printf("%s" , line);
 		line = get_next_line(fd);
+		i--;
 	}
+	printf("%s" , line);
 	close(fd);
 }
