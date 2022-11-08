@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/07 21:01:06 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/08 15:36:29 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*ft_strchr(char *s, int c);
 
 int		checker(char *buf);
 
-char	*saving(char *buf, size_t buf_size);
+char	*saving(char *buf, char *tmp);
 
+char	*ft_strdup(const char *s1);
 #endif

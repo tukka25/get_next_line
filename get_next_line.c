@@ -6,13 +6,13 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:54 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/07 23:49:37 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/08 16:34:42 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*rest_less_than_buffersize(char *buf, size_t buf_size)
+char	*rest_less_than_buffersize(char *buf, size_t buf_size, char *tmp)
 {
 	size_t	i;
 	int		j;
@@ -24,18 +24,23 @@ char	*rest_less_than_buffersize(char *buf, size_t buf_size)
 	while (j < i)
 		j++;
 	buf[j] = '\0';
-	return (buf);
+	// printf("buf = %s", buf);
+	tmp = sa3ad(tmp, buf, buf_size);
+	// printf("tmp = %s", tmp);
+	return (tmp);
 }
 
 char	*sa3ad(char *tmp, char *buf, size_t buf_size)
 {
 	char	*str;
 	int		i;
+	char	*tmp2;
 
 	i = 0;
 	str = NULL;
+	// tmp2 = ft_strdup()
 	str = ft_strjoin(tmp, buf);
-	buf = malloc((buf_size +1) * sizeof(char));
+	buf = malloc((buf_size + 1) * sizeof(char));
 	return (str);
 }
 
@@ -64,87 +69,61 @@ char	*get_next_line(int fd)
 
 	tmp = NULL;
 	buf_size = 3;
+	if (buf)
+		tmp = saving(buf, tmp);
+	else
+		tmp = malloc(buf_size + 1);
 	buf = malloc(buf_size + 1);
-	tmp = malloc(buf_size + 1);
-	tmp = sa3ad(tmp, buf, buf_size);
-	// printf("at first = %s", buf);
-	j = 1;
-	// buf[j] = '\0';
+	j = read(fd, buf, buf_size);
+	if (j == 0)
+	{
+		free(buf);
+		buf = NULL;
+		return (NULL);
+	}
 	while (ft_strchr(buf, '\n') == 0 && j != 0)
 	{
-		// printf("%s\n", buf);
-		// if (j > 0)
-		// if (j < buf_size)
-		// 	buf = rest_less_than_buffersize(buf, buf_size);
-		// printf("before buf = %s\n", buf);
-		// printf("before tmp = %s\n", tmp);
-		j = read(fd, buf, buf_size);
-		buf[j] = '\0';
 		tmp = sa3ad(tmp, buf, buf_size);
-		// printf("after buf = %s\n", buf);
-		// printf("after tmp = %s\n", tmp);
+		j = read(fd, buf, buf_size);
 		if (!buf)
-		return (NULL);
-		
-		if (j == -1)
 			return (NULL);
-		printf("%d\n", j);
 	}
-	// printf("%s\n", tmp);
-	// if (j < buf_size)
-	// 	buf = rest_less_than_buffersize(buf, buf_size);
+	if (j < buf_size)
+	{
+		// printf("\nbuf = %s", buf);
+		buf_size = j;
+		buf = rest_less_than_buffersize(buf, buf_size, tmp);
+	// 	// printf("after buf = %s", buf);
+	}
 	// tmp = sa3ad(tmp, buf, buf_size);
-	if (j <= buf_size && j != 0)
-		buf = saving(buf, buf_size);
-		// printf("%s\n", buf);
 	return (tmp);
 }
 
-char	*saving(char *buf, size_t buf_size)
+char	*saving(char *buf, char *tmp)
 {
 	char	*str;
-	int		i;
-	int		j;
 
-	str = malloc(buf_size);
-	i = 0;
-	j = 0;
-	if (checker(buf) == 0)
-	{
-		while (buf[i] != '\0')
-		{
-			if (buf[i] == '\n')
-			{
-				while (buf[i] != '\0')
-				{
-					str[j++] = buf[i + 1];
-					i++;
-				}
-			}
-			i++;
-		}
-		str[j] = '\0';
-		return (str);
-	}
-	return (buf);
+	str = ft_strdup(buf);
+	tmp = ft_strjoin(tmp, str);
+	return (tmp);
 }
 
 int main()
 {
 	int fd;
-	int i = 2;
+	int i = 0;
 	char str[100];
 	
 	fd = open("f.txt", O_RDONLY);
 		char *line;
 		line = get_next_line(fd);
 		// free(line);
-	while(i - 1 > 0)
+	while(line != NULL)
 	{
 		printf("%s" , line);
 		line = get_next_line(fd);
-		i--;
 	}
-	printf("%s" , line);
+	
+	// printf("%s" , line);
 	close(fd);
 }
