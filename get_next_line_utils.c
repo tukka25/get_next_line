@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/08 16:32:49 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/09 19:00:31 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,14 @@ char	*ft_strjoin(char *s1, char *s2)
 	len = len_check(s1, s2);
 	str = (char *)malloc(len * sizeof(char) + 1);
 	if (!str)
-		return (0);
+		return (NULL);
 	while (s1[i] != '\0')
 		str[j++] = s1[i++];
 	i = 0;
-	while (s2[i] != '\0' && s2[i - 1] != '\n')
+	while (s2[i] != '\0')
 		str[j++] = s2[i++];
 	str[j] = '\0';
-	free(s2);
+	// free(s2);
 	return (str);
 }
 
