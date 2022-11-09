@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/09 19:00:31 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/09 23:09:04 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,30 @@ char	*ft_strchr(char *s, int c)
 	}
 	return (0);
 }
+
+// int	ft_strchr(char *s, int c)
+// {
+// 	int		i;
+// 	char	*new_string;
+// 	char	tmp;
+
+// 	i = 0;
+// 	tmp = (char ) c;
+// 	if (tmp == 0)
+// 		return (s + ft_strlen(s));
+// 	while (*s != '\0')
+// 	{
+// 		if (*s == tmp)
+// 		{
+// 			new_string = (char *) s;
+// 			return (1);
+// 		}
+// 		s++;
+// 	}
+// 	// if (tmp == 0)
+// 	// 	return ((char *)s + ft_strlen(s));
+// 	return (0);
+// }
 
 char	*ft_strdup(const char *s1)
 {
