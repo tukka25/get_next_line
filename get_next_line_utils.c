@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/09 23:09:04 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/10 15:06:31 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,14 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s1[i] != '\0')
 		str[j++] = s1[i++];
 	i = 0;
-	while (s2[i] != '\0')
+	while (s2[i] != '\0' && s2[i] != '\n')
 		str[j++] = s2[i++];
 	str[j] = '\0';
 	// free(s2);
 	return (str);
 }
 
-char	*ft_strchr(char *s, int c)
+int	ft_strchr(char *s, int c)
 {
 	int		i;
 	char	*new_string;
@@ -95,7 +95,7 @@ char	*ft_strchr(char *s, int c)
 		if (s[i] == tmp)
 		{
 			// new_string = (char *) s;
-			return (s + i);
+			return (1);
 		}
 		i++;
 	}
