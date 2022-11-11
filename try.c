@@ -144,3 +144,30 @@ close(fd);
 // 	join;
 // 	get_next_line(read)
 // }
+
+// har	*saving(char *buf, char *tmp)
+// {
+// 	char	*str;
+// 	int		i;
+// 	int		j;
+// 	int		len;
+
+// 	i = 0;
+// 	j = ft_strlen(buf);
+// 	while (buf[i] != '\n')
+// 		i++;
+// 	len = j - i;
+// 	str = malloc(j + 1);
+// 	if (!str)
+// 		return (NULL);
+// 	i++;
+// 	j = 0;
+// 	while (buf[i] != '\0')
+// 	{
+// 		str[j++] = buf[i++];
+// 	}
+// 	str[j] = '\0';
+// 	// printf("str = %s\n", str);
+// 	tmp = ft_strjoin(tmp, str);
+// 	return (tmp);
+// }

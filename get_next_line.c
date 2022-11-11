@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/02 14:33:54 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/11 16:49:18 by abdamoha         ###   ########.fr       */
+/*   Created: 2022/11/11 17:45:42 by abdamoha          #+#    #+#             */
+/*   Updated: 2022/11/11 19:36:23 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,47 +88,47 @@ char	*ignoring(char *tmp)
 	return (str);
 }
 
-// char	*saving(char *buf, char *tmp)
-// {
-// 	char	*str;
-// 	int		i;
-// 	int		j;
-// 	int		len;
-
-// 	i = 0;
-// 	j = ft_strlen(buf);
-// 	while (buf[i] != '\n')
-// 		i++;
-// 	len = j - i;
-// 	str = malloc(j + 1);
-// 	if (!str)
-// 		return (NULL);
-// 	i++;
-// 	j = 0;
-// 	while (buf[i] != '\0')
-// 	{
-// 		str[j++] = buf[i++];
-// 	}
-// 	str[j] = '\0';
-// 	tmp = ft_strjoin(tmp, str);
-// 	return (tmp);
-// }
-
 char	*saving(char *buf, char *tmp)
 {
 	char	*str;
+	int		i;
+	int		j;
+	int		len;
 
-	str = ft_strdup(buf);
+	i = 0;
+	j = ft_strlen(buf);
+	while (buf[i] != '\n')
+		i++;
+	len = j - i;
+	str = malloc(j + 1);
+	if (!str)
+		return (NULL);
+	i++;
+	j = 0;
+	while (buf[i] != '\0')
+	{
+		str[j++] = buf[i++];
+	}
+	str[j] = '\0';
 	tmp = ft_strjoin(tmp, str);
 	return (tmp);
 }
 
+// char	*saving(char *buf, char *tmp)
+// {
+// 	char	*str;
+
+// 	str = ft_strdup(buf);
+// 	tmp = ft_strjoin(tmp, str);
+// 	return (tmp);
+// }
+
 char	*get_next_line(int fd)
 {
 	size_t				buf_size;
-	char				*buf;
+	static char				*buf;
 	int					j;
-	static char			*tmp;
+	char			*tmp;
 
 	buf_size = 3;
 	if (buf)
@@ -153,7 +153,6 @@ char	*get_next_line(int fd)
 		// printf("buf = %s\n", buf);
 		// printf("j = %d\n", j);
 		tmp = joining(tmp, buf, buf_size, j);
-		// printf("tmp = %s\n", tmp);
 		// printf("tmp = %s\n", tmp);
 		// printf("len = %zu\n", ft_strlen(tmp));
 		// printf("d");

@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/11 16:01:59 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/11 17:46:27 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,5 @@ char	*saving(char *buf, char *tmp);
 
 char	*ft_strdup(const char *s1);
 
-int	saving_len(char	*buf);
+int		saving_len(char	*buf);
 #endif
