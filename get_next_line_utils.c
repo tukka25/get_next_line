@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/11 15:58:26 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/12 16:52:53 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *str)
 	size_t	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i] != '\0')
 	{
 		i++;
@@ -88,8 +90,8 @@ int	ft_strchr(char *s, int c)
 
 	i = 0;
 	tmp = (char ) c;
-	// if (tmp == 0)
-	// 	return ((char *)s + ft_strlen(s));
+	if (!s)
+		return (0);
 	while (s[i] != '\0')
 	{
 		if (s[i] == tmp)
@@ -101,30 +103,6 @@ int	ft_strchr(char *s, int c)
 	}
 	return (0);
 }
-
-// int	ft_strchr(char *s, int c)
-// {
-// 	int		i;
-// 	char	*new_string;
-// 	char	tmp;
-
-// 	i = 0;
-// 	tmp = (char ) c;
-// 	if (tmp == 0)
-// 		return (s + ft_strlen(s));
-// 	while (*s != '\0')
-// 	{
-// 		if (*s == tmp)
-// 		{
-// 			new_string = (char *) s;
-// 			return (1);
-// 		}
-// 		s++;
-// 	}
-// 	// if (tmp == 0)
-// 	// 	return ((char *)s + ft_strlen(s));
-// 	return (0);
-// }
 
 char	*ft_strdup(const char *s1)
 {
@@ -145,15 +123,15 @@ char	*ft_strdup(const char *s1)
 	return (str);
 }
 
-int	saving_len(char	*buf)
-{
-	int	i;
-	int	j;
+// void	*ft_calloc(size_t count, size_t size)
+// {
+// 	char	*x;
 
-	i = 0;
-	j = ft_strlen(buf);
-	while (buf[i] != '\0')
-		i++;
-	i = j - i;
-	return (i);
-}
+// 	if (size != 0 && count >= SIZE_MAX / size)
+// 		return (NULL);
+// 	x = malloc(count * size);
+// 	if (!x)
+// 		return (NULL);
+// 	ft_bzero (x, (size * count));
+// 	return (x);
+// }

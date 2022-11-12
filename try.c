@@ -1,30 +1,30 @@
-#include "get_next_line.h"
-#include <stdio.h>
+// #include "get_next_line.h"
+// #include <stdio.h>
 
-int main()
-{
-	int fd;
-	int i = 0;
-	char str[100];
+// int main()
+// {
+// 	int fd;
+// 	int i = 0;
+// 	char str[100];
 	
-	fd = open("f.txt", O_RDONLY);
-		char *line;
-		// line = get_next_line(fd);
+// 	fd = open("f.txt", O_RDONLY);
+// 		char *line;
+// 		// line = get_next_line(fd);
 		
-		// free(line);
-	// while(line != NULL)
-	// {
-	// 	printf("%s" , line);
-	// 	line = get_next_line(fd);
-	// }
-size_t buf_size = 5;
-// char *buf = malloc(buf_size);
+// 		// free(line);
+// 	// while(line != NULL)
+// 	// {
+// 	// 	printf("%s" , line);
+// 	// 	line = get_next_line(fd);
+// 	// }
+// size_t buf_size = 5;
+// // char *buf = malloc(buf_size);
 
-read(fd, buf, buf_size);
+// read(fd, buf, buf_size);
 
-printf("%s" , line);
-close(fd);
-}
+// printf("%s" , line);
+// close(fd);
+// }
 // static int	len_check(char const *s1, char const *s2)
 // {
 // 	int	len_1;
@@ -171,3 +171,178 @@ close(fd);
 // 	tmp = ft_strjoin(tmp, str);
 // 	return (tmp);
 // }
+
+
+
+
+
+
+/*/////////////////////////////////////////////////
+
+#include "get_next_line.h"
+
+char	*rest_less(char *buf, int j, size_t buf_size)
+{
+	int		i;
+	int		len;
+	char	*tmp;
+
+	i = ft_strlen(buf);
+	tmp = malloc(j + 1);
+	len = 0;
+	while (len < j)
+	{
+		tmp[len] = buf[len];
+		len++;
+	}
+	tmp[len] = '\0';
+	return (tmp);
+}
+
+char	*joining(char *tmp, char *buf, size_t buf_size, int j)
+{
+	char	*str;
+	int		i;
+	char	*tmp2;
+
+	i = 0;
+	if (ft_strchr(buf, '\n') != 0)
+	{
+		str = ft_strjoin(tmp, buf);
+		i = ft_strlen(str);
+		// tmp2 = ft_strdup(str);
+		// str = ft_strdup(tmp2);
+		// if (str)
+		// {
+		// 	str[i] = '\n';
+		// 	str[i + 1] = '\0';
+		// 	// free(tmp2);
+		// }
+	}
+	else if (ft_strchr(buf, '\n') == 0 && j < buf_size && j != 0)
+	{
+		buf = rest_less(buf, j, buf_size);
+		str = ft_strjoin(tmp, buf);
+	}
+	else if (j > 0)
+		str = ft_strjoin(tmp, buf);
+	else
+		return (tmp);
+	return (str);
+}
+
+// char	*ignoring(char *tmp)
+// {
+// 	char	*str;
+// 	int		i;
+// 	int		j;
+
+// 	j = 0;
+// 	i = 0;
+// 	while (tmp[i] != '\n' && tmp[i])
+// 		i++;
+// 	if (!tmp)
+// 	{
+// 		free(tmp);
+// 		return (NULL);
+// 	}
+// 	str = malloc(ft_strlen(tmp) - i);
+// 	if (!str)
+// 		return (NULL);
+// 	i += 1;
+// 	while (tmp[i] != '\n' && tmp[i])
+// 		str[j++] = tmp[i++];
+// 	// str = saving(buf, tmp);
+// 	str[j] = '\0';
+// 	// free(tmp);
+// 	return (str);
+// }
+
+char	*saving(char *buf, char *tmp)
+{
+	char	*str;
+	int		i;
+	int		j;
+	int		len;
+
+	i = 0;
+	j = ft_strlen(buf);
+	while (buf[i] && buf[i] != '\n')
+		i++;
+	len = j - i;
+	str = malloc(j + 1);
+	if (!str)
+		return (NULL);
+	i++;
+	j = 0;
+	while (buf[i] != '\0')
+	{
+		str[j++] = buf[i++];
+	}
+	str[j] = '\0';
+	tmp = ft_strjoin(tmp, str);
+	return (tmp);
+}
+
+char	*get_next_line(int fd)
+{
+	int				buf_size;
+	static char			*buf;
+	int					j;
+	char			*tmp;
+
+	buf_size = 3;
+	tmp = NULL;
+	if (buf)
+	{
+		tmp = saving(buf, NULL);
+		free(buf);
+		buf = calloc(buf_size + 2, sizeof(char));
+	}
+	else
+	{
+		buf = calloc(buf_size + 2, sizeof(char));
+		tmp = calloc(buf_size + 2, sizeof(char));
+	}
+	j = 1;
+	while (ft_strchr(buf, '\n') == 0 && j != 0)
+	{
+		j = read(fd, buf, buf_size);
+		//printf("10000\n");
+		if (j == -1)
+			return NULL;
+		if (j < buf_size)
+		{
+			// free(buf);
+			// buf = NULL;
+			tmp = joining(tmp, buf, buf_size, j);
+			free(buf);
+			buf = NULL;
+			//printf("900000\n");
+			return (tmp);
+		}
+		// //printf("buf = %s\n", buf);
+		//printf("j = %d\n", j);
+		tmp = joining(tmp, buf, buf_size, j);
+		// //printf("tmp = %s\n", tmp);
+		// //printf("j = %d\n", j);
+		// //printf("len = %zu\n", ft_strlen(tmp));
+		// //printf("d");
+	}
+		//printf("999\n");
+	return (tmp);
+}
+
+int main()
+{
+	int fd =open("f.txt", O_RDONLY);
+	char *line = get_next_line(fd);
+	while (line != NULL)
+	{
+		printf(" a = %s", line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	close (fd);
+}
+//////////////////////////////////////////////////*/
