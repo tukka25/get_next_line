@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/12 16:52:53 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/15 18:57:00 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ char	*ft_strjoin(char *s1, char *s2)
 int	ft_strchr(char *s, int c)
 {
 	int		i;
-	char	*new_string;
 	char	tmp;
 
 	i = 0;
@@ -95,43 +94,30 @@ int	ft_strchr(char *s, int c)
 	while (s[i] != '\0')
 	{
 		if (s[i] == tmp)
-		{
-			// new_string = (char *) s;
 			return (1);
-		}
 		i++;
 	}
 	return (0);
 }
 
-char	*ft_strdup(const char *s1)
+void	*ft_calloc(size_t count, size_t size)
 {
-	char	*str;
+	char	*x;
+	size_t	len;
 	int		i;
 
-	i = ft_strlen(s1);
-	str = (char *)malloc((i * sizeof(char)) + 1);
-	if (!str)
-		return (NULL);
 	i = 0;
-	while (s1[i] != '\0')
+	len = count * size;
+	if (size != 0 && count >= SIZE_MAX / size)
+		return (NULL);
+	x = malloc(count * size);
+	if (!x)
+		return (NULL);
+	while (len > 0)
 	{
-		str[i] = s1[i];
+		x[i] = 0;
 		i++;
+		len--;
 	}
-	str[i] = '\0';
-	return (str);
+	return (x);
 }
-
-// void	*ft_calloc(size_t count, size_t size)
-// {
-// 	char	*x;
-
-// 	if (size != 0 && count >= SIZE_MAX / size)
-// 		return (NULL);
-// 	x = malloc(count * size);
-// 	if (!x)
-// 		return (NULL);
-// 	ft_bzero (x, (size * count));
-// 	return (x);
-// }
