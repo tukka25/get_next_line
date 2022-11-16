@@ -2,12 +2,12 @@
 
 char	*rest_less(char *buf, int j)
 {
-	int		i;
 	int		len;
 	char	*tmp;
 
-	i = ft_strlen(buf);
 	tmp = malloc(j + 1);
+	if (!tmp)
+		return (NULL);
 	len = 0;
 	while (len < j)
 	{
@@ -15,10 +15,11 @@ char	*rest_less(char *buf, int j)
 		len++;
 	}
 	tmp[len] = '\0';
+	printf("tmp = %p\n", tmp);
 	return (tmp);
 }
 
-char	*joining(char *buf, char *tmp, size_t buff_size, int j)
+char	*joining(char *buf, char *tmp, int j)
 {
 	char	*str;
 	int		i;
@@ -26,33 +27,42 @@ char	*joining(char *buf, char *tmp, size_t buff_size, int j)
 
 	if (ft_strchr(tmp, '\n') != 0)
 	{
-		// printf("1\n");
 		tmp2 = ft_strjoin(buf, tmp);
+		printf("tmp2 = %p\n", tmp2);
 		i = ft_strlen(tmp2);
 		str = malloc(i + 2);
+		if (!str)
+			return (NULL);
 		i = 0;
 		while (tmp2[i] != '\0')
 		{
 			str[i] = tmp2[i];
 			i++;
 		}
+		// printf("i = %d\n", i);
 		str[i] = '\n';
 		str[i + 1] = '\0';
+		printf("str1 = %p\n", str);
+		// free(tmp);
+		free(tmp2);
 	}
-	else if (ft_strchr(buf, '\n') == 0 && j < buff_size && j != 0)
+	else if (ft_strchr(buf, '\n') == 0 && j < BUFFER_SIZE && j != 0)
 	{
-		// printf("2\n");
-		tmp = rest_less(tmp, j);
-		str = ft_strjoin(buf, tmp);
+		tmp2 = rest_less(tmp, j);
+		printf("tmp2 = %p\n", tmp2);
+		str = ft_strjoin(buf, tmp2);
+		free(tmp2);
 	}
 	else if (j > 0)
 	{
-		// printf("3\n");
 		str = ft_strjoin(buf, tmp);
+		printf("str2 = %p\n", str);
+		// free(tmp);
 	}
 	else
 	{
-		// printf("4\n");
+		printf(" else = %s", buf);
+		// free(tmp);
 		return (buf);
 	}
 	return (str);
@@ -60,60 +70,75 @@ char	*joining(char *buf, char *tmp, size_t buff_size, int j)
 
 char	*saving(char *buf, char *tmp)
 {
-	char	*str;
-	int		i;
-	int		j;
-	int		len;
+	char		*str1;
+	int			i;
+	size_t		j;
+	int			len;
 
 	i = 0;
 	j = ft_strlen(buf);
+	printf("buf = %s\n", buf);
 	while (buf[i] && buf[i] != '\n')
 		i++;
 	len = j - i;
-	str = malloc(len + 1);
-	if (!str)
+	str1 = malloc(len + 1);
+	if (!str1)
 		return (NULL);
 	i++;
 	j = 0;
 	while (buf[i] != '\0')
 	{
-		str[j++] = buf[i++];
+		str1[j++] = buf[i++];
 	}
-	str[j] = '\0';
-	tmp = ft_strjoin(tmp, str);
+	str1[j] = '\0';
+	tmp = ft_strjoin(tmp, str1);
+	printf("saving = %p\n", tmp);
+	if (str1 == NULL)
+		free(str1);
 	return (tmp);
 }
 
 char	*get_next_line(int fd)
 {
-	size_t			buff_size;
 	static char		*tmp;
 	char			*buf;
+	char			*str;
 	int				j;
-	int				i = 0;
 
-	buff_size = 2000;
-	i = 0;
-	if (buf)
-		buf = saving(tmp, buf);
-	else
-		buf = calloc(buff_size + 1, sizeof(char));
-	tmp = calloc(buff_size + 1, sizeof(char));
-	j = 1;
-	while (ft_strchr(tmp, '\n') == 0 && j != 0)
+	buf = NULL;
+	if (fd < 0)
+		return (NULL);
+	if (tmp)
 	{
-		j = read(fd, tmp, buff_size);
+		buf = saving(tmp, buf);
+		// free(tmp);
+	}
+	else
+		buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!buf)
+		return (NULL);
+	tmp = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!tmp)
+		return (NULL);
+	j = 1;
+	while (ft_strchr(tmp, '\n') == 0 && j > 0)
+	{
+		j = read(fd, tmp, BUFFER_SIZE);
 		if (j == -1)
 		{
 			free(tmp);
-			tmp = NULL;
 			return (NULL);
 		}
-		buf = joining(buf, tmp, buff_size, j);
-		if (j == 0 && i == 0)
+		printf("buf = %p\n", buf);
+		printf("tmp = %p\n", tmp);
+		str = joining(buf, tmp, j);
+		// free(buf);
+		buf = str;
+		// free(str);
+		if (*buf == 0)
 			return (NULL);
-		i++;
 	}
+	// free(tmp);
 	return (buf);
 }
 
@@ -121,11 +146,14 @@ int main()
 {
 	int fd = open("f2.txt", O_RDONLY);
 	char *line = get_next_line(fd);
+	check_leaks();
 	while (line != NULL)
 	{
 		printf("%s", line);
+		// check_leaks();
 		free(line);
 		line = get_next_line(fd);
 	}
+	free(line);
 	close (fd);
 }

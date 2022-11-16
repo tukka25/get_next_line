@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/15 15:45:23 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/16 21:27:50 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@ char	*ft_strjoin(char *s1, char *s2);
 
 char	*ft_memmove(char *dst, char *src, size_t len);
 
-char	*joining(char *tmp, char *buf, int j);
+char	*joining(char *buf, char *tmp, int j);
 
 char	*rest_less(char *buf, int j);
 
 int		ft_strchr(char *s, int c);
 
 char	*ignoring(char *tmp);
+
+void check_leaks();
 
 char	*saving(char *buf, char *tmp);
 
