@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/16 21:27:50 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/17 21:46:31 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ size_t	ft_strlen(const char *str);
 
 char	*ft_strjoin(char *s1, char *s2);
 
-char	*ft_memmove(char *dst, char *src, size_t len);
-
-char	*joining(char *buf, char *tmp, int j);
+char	*joining(char *str, char *buf, char *tmp, int j);
 
 char	*rest_less(char *buf, int j);
 

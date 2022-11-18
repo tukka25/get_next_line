@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/16 22:29:28 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/17 22:07:47 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*str;
 	int		i;
 	int		j;
-
+	
 	if (!s1 && !s2)
 		return (NULL);
 	if (s1 == NULL && s2)
@@ -72,11 +72,24 @@ char	*ft_strjoin(char *s1, char *s2)
 	str = (char *)malloc(len * sizeof(char) + 1);
 	if (!str)
 		return (NULL);
+	// printf("s2 = %s\n", s2);	
 	while (s1[i] != '\0')
-		str[j++] = s1[i++];
+	{
+		str[j] = s1[i];
+		// printf("s1 = %c\n", s1[i]);
+		// printf("s2 = %c\n", s2[i]);
+		i++;
+		j++;
+	}
+	// printf("s2 = %s\n", s2);	
+	// printf("s1 = %s\n", s1);
+	// printf("s2 = %s\n", s2);
 	i = 0;
 	while (s2[i] != '\0' && s2[i] != '\n')
+	{
+		//write(1, "khn", 1);
 		str[j++] = s2[i++];
+	}
 	str[j] = '\0';
 	// free(s2);
 	return (str);
