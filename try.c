@@ -28,28 +28,24 @@ char	*joining(char *str, char *buf, char *tmp, int j)
 	f = strdup(tmp);
 	if (ft_strchr(tmp, '\n') != 0)
 	{
-		// write(1, "o", 1);
-		// printf("tmp = %s\n", tmp);
+		// printf("f = %s\n", f);
 		// printf("str = %s\n", str);
-		
 		tmp2 = ft_strjoin(str, f);
-		// printf("tmp = %s\n", tmp);
+		// printf("tmp2 = %s\n", tmp2);
 		i = ft_strlen(tmp2);
 		s = malloc(i + 2);
 		if (!s)
 			return (NULL);
 		i = 0;
-		// write(1, "o", 1);
 		while (tmp2[i] != '\0')
 		{
 			s[i] = tmp2[i];
 			i++;
 		}
-		if (str != NULL)
-			s[i] = '\n';
+		s[i] = '\n';
 		s[i + 1] = '\0';
 		// buf = s;
-		free(tmp2);
+		// free(tmp2);
 		// free(tmp);
 		return (s);
 	}
@@ -57,11 +53,11 @@ char	*joining(char *str, char *buf, char *tmp, int j)
 	{
 		tmp2 = rest_less(f, j);
 		buf = ft_strjoin(str, tmp2);
-		if (str != NULL)
-			free(str);
+		// if (str != NULL)
+		// 	free(str);
 		// buf = strdup(str);
-		free(tmp2);
-		free(f);
+		// free(tmp2);
+		// free(f);
 		return (buf);
 	}
 	else if (j > 0)
@@ -73,8 +69,8 @@ char	*joining(char *str, char *buf, char *tmp, int j)
 		// 	free(str);
 		// }
 		str = strdup(tmp2);
-		free(tmp2);
-		free(f);
+		// free(tmp2);
+		// free(f);
 		return (str);
 	}
 	else
@@ -85,27 +81,33 @@ char	*joining(char *str, char *buf, char *tmp, int j)
 char	*saving(char *buf, char *tmp)
 {
 	char		*str1;
+	// char		*save;
 	int			i;
 	size_t		j;
 	int			len;
 
 	i = 0;
+	j = ft_strlen(tmp);
 	j = ft_strlen(buf);
+	buf[j] = '\0';
 	while (buf[i] && buf[i] != '\n')
 		i++;
+	i++;
 	len = j - i;
 	str1 = malloc(len + 1);
 	if (!str1)
 		return (NULL);
-	i++;
 	j = 0;
 	while (buf[i] != '\0')
-		str1[j++] = buf[i++];
+	{
+		str1[j] = buf[i];
+		j++;
+		i++;
+	}
 	str1[j] = '\0';
-	tmp = ft_strjoin(tmp, str1);
 	if (str1 == NULL)
 		free(str1);
-	return (tmp);
+	return (str1);
 }
 
 char	*get_next_line(int fd)
@@ -130,19 +132,13 @@ char	*get_next_line(int fd)
 	while (ft_strchr(tmp, '\n') == 0 && j > 0)
 	{
 		j = read(fd, tmp, BUFFER_SIZE);
-		// tmp[j] = '\0';
 		if (j == -1)
 		{
 			free(tmp);
 			return (NULL);
 		}
-		// printf("j = %d\n", j);
-		// printf("tmp before  = %s\n", tmp);
-		// printf("str before  = %s\n", str);
 		str = joining(str, buf, tmp, j);
-		// printf("tmp after  = %s\n", tmp);
-		// printf("str after  = %s\n", str);
-		if (*tmp == 0)
+		if (*tmp == 0 && *str == '\0')
 		{
 			free(tmp);
 			return (NULL);

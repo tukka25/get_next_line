@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/17 22:09:50 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/18 20:27:55 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,48 +35,68 @@ char	*joining(char *str, char *buf, char *tmp, int j)
 	int		i;
 	char	*tmp2;
 	char	*s;
+	char	*f = NULL;
 
 	if (ft_strchr(tmp, '\n') != 0)
 	{
-		tmp2 = ft_strjoin(str, tmp);
+		// printf("tmp = %s\n", tmp);
+		// printf("str = %s\n", str);
+		f = strdup(tmp);
+		// printf("1str = %p", str);
+		tmp2 = ft_strjoin(str, f);
+		// printf("1tmp2 = %p\n", tmp2);
 		i = ft_strlen(tmp2);
 		s = malloc(i + 2);
 		if (!s)
 			return (NULL);
 		i = 0;
+		// write(1, "o", 1);
 		while (tmp2[i] != '\0')
 		{
 			s[i] = tmp2[i];
 			i++;
 		}
-		if (str != NULL)
-			s[i] = '\n';
+		s[i] = '\n';
 		s[i + 1] = '\0';
-		buf = strdup(s);
-		free(s);
-		free(tmp2);
-		return (buf);
-	}
-	else if (ft_strchr(str, '\n') == 0 && j < BUFFER_SIZE && j != 0)
-	{
-		tmp2 = rest_less(tmp, j);
-		str = ft_strjoin(str, tmp2);
-		buf = strdup(str);
+		// buf = s;
 		free(tmp2);
 		// free(tmp);
+		return (s);
+	}
+	else if (ft_strchr(tmp, '\n') == 0 && j < BUFFER_SIZE && j != 0)
+	{
+		f = strdup(tmp);
+		tmp2 = rest_less(f, j);
+		// printf("2tmp2 = %p\n", tmp2);
+		buf = ft_strjoin(str, tmp2);
+		// printf("buf = %p\n", buf);
+		// if (str != NULL)
+		// 	free(str);
+		// buf = strdup(str);
+		free(tmp2);
+		// if (f != NULL)
+			// free(f);
 		return (buf);
 	}
 	else if (j > 0)
 	{
-		tmp2 = ft_strjoin(str, tmp);
-		free(tmp);
+		f = strdup(tmp);
+		tmp2 = ft_strjoin(str, f);
+		// if (*str != NULL)
+		// {
+		// // 	str = tmp2;
+		// 	free(str);
+		// }
 		str = strdup(tmp2);
-	}
-	else
-	{
+		// printf("sstr = %p\n", str);
+		// printf("3tmp2 = %p\n", tmp);
+		// free(tmp2);
+		// if (f != NULL)
 		free(tmp);
 		return (str);
 	}
+	else
+		return (str);
 	return (str);
 }
 
@@ -112,26 +132,36 @@ char	*get_next_line(int fd)
 	char			*buf;
 	char			*str;
 	int				j;
+	int				i;
 
 	str = NULL;
 	buf = NULL;
+	j = 1;
+	i = 0;
 	if (fd < 0)
 		return (NULL);
 	if (tmp)
+	{
 		str = saving(tmp, str);
+	}
 	tmp = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!tmp)
 		return (NULL);
-	j = 1;
 	while (ft_strchr(tmp, '\n') == 0 && j > 0)
 	{
 		j = read(fd, tmp, BUFFER_SIZE);
+		// tmp[j] = '\0';
 		if (j == -1)
 		{
 			free(tmp);
 			return (NULL);
 		}
+		// printf("j = %d\n", j);
+		// printf("before tmp  = %p\n", tmp);
+		// printf("before str  = %p\n", str);
 		str = joining(str, buf, tmp, j);
+		// printf("tmp after  = %p\n", tmp);
+		// printf("str after  = %p\n", str);
 		if (*tmp == 0)
 		{
 			free(tmp);
@@ -149,10 +179,10 @@ int main()
 	while (line != NULL)
 	{
 		printf("%s", line);
-		// free(line);
+		free(line);
 		line = get_next_line(fd);
 	}
-	// free(line);
+	free(line);
 	close (fd);
 }
 
