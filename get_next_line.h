@@ -6,15 +6,15 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/18 19:14:46 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/20 19:29:45 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-// # ifndef BUFFER_SIZE
-// # define BUFFER_SIZE 42
-// # endif
+# ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+# endif
 # include <stdio.h>
 # include <string.h>
 # include <unistd.h>
@@ -29,7 +29,7 @@ size_t	ft_strlen(const char *str);
 
 char	*ft_strjoin(char *s1, char *s2);
 
-char	*joining(char *str, char *buf, char *tmp, int j);
+// char	*joining(char *str, char *buf, char *tmp, int j);
 
 char	*rest_less(char *buf, int j);
 
