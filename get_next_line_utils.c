@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/21 20:18:05 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/28 18:13:37 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,24 +97,29 @@ int	ft_strchr(char *s, int c)
 	return (0);
 }
 
-void	*ft_calloc(size_t count, size_t size)
-{
-	char	*x;
-	size_t	len;
-	int		i;
+// void	*ft_calloc(size_t count, size_t size)
+// {
+// 	char	*x;
+// 	size_t	len;
+// 	int		i;
 
-	i = 0;
-	len = count * size;
-	if (size != 0 && count >= SIZE_MAX / size)
-		return (NULL);
-	x = malloc(count * size);
-	if (!x)
-		return (NULL);
-	while (len > 0)
-	{
-		x[i] = 0;
-		i++;
-		len--;
-	}
-	return (x);
+// 	i = 0;
+// 	len = count * size;
+// 	if (size != 0 && count >= SIZE_MAX / size)
+// 		return (NULL);
+// 	x = malloc(count * size);
+// 	if (!x)
+// 		return (NULL);
+// 	while (len > 0)
+// 	{
+// 		x[i] = 0;
+// 		i++;
+// 		len--;
+// 	}
+// 	return (x);
+// }
+
+int	ft_isascii(int c)
+{
+	return ((c >= 0 && c <= 127));
 }

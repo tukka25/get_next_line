@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/22 16:18:03 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/28 22:15:49 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ char	*saving(char *buf, char *str)
 	while (buf[i] != '\0')
 	{
 		str1[j] = buf[i];
+		// printf("saving\n");
 		// printf("{%c}", str1[j]);
 		j++;
 		i++;
@@ -163,7 +164,7 @@ char	*saving(char *buf, char *str)
 	str1[j] = '\0';
 	str = ft_strjoin(str1, str);
 	// printf("str saving = %p\n", str);
-	free(buf);
+	// free(buf);
 	// if (str1 == NULL)
 	// {
 	free(str1);
@@ -189,55 +190,67 @@ char	*get_next_line(int fd)
 	if (tmp)
 	{
 		str = saving(tmp, str);
-		// free(tmp);
-		// printf("saving = %s\n", str);
+		free(tmp);
 	}
-	tmp = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	// printf("str after  = %s\n", str);
+	tmp = malloc(BUFFER_SIZE + 1);
 	if (!tmp)
 		return (NULL);
-	while (ft_strchr(tmp, '\n') == 0 && j > 0)
+	i++;
+	while (ft_strchr(tmp, '\n') == 0 && j >= 0)
 	{
+		printf("here\n");
 		j = read(fd, tmp, BUFFER_SIZE);
 		tmp[j] = '\0';
 		if (j <= -1)
 		{
 			free(tmp);
-			free(str);
+			// free(str);
 			return (NULL);
 		}
 		// printf("j = %d\n", j);
 		// printf("before tmp  = %s\n", tmp);
 		// printf("before str  = %s\n", str);
 		str = joining(str, buf, tmp, j);
-		// printf("tmp after  = %s\n", tmp);
-		// printf("str after  = %s\n", str);
-		if ((*tmp == 0 && *str == '\0'))
+		if (j == 0)
 		{
+		// printf("on");
 			free(tmp);
 			free(str);
 			return (NULL);
 		}
+		// printf("tmp after  = %s\n", tmp);
+		// printf("str after  = %s\n", str);
+		i++;
 	}
+	
 	return (str);
 }
 
-// int main()
-// {
-// 	int fd = open("f2.txt", O_RDONLY);
-// 	char *line = get_next_line(fd);
-// 	free(line);
-// 	line = get_next_line(fd);
-// 	free(line);
-// 	line = get_next_line(fd);
-// 	// // free(line);
-// 	// line = get_next_line(fd);
-// 	// check_leaks();
-// 	// while (line != NULL)
-// 	// {
-// 		printf("%s", line);
-// 		free(line);
-// 	// 	line = get_next_line(fd);
-// 	// }
-// 	// free(line);
-// 	close (fd);
-// }
+int main()
+{
+	int i = 0;
+	int fd = open("f2.txt", O_RDONLY);
+	char *line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// check_leaks();
+	while (line)
+	{
+		printf("%s", line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	// free(line);
+	close (fd);
+}

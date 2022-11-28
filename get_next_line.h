@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/20 19:29:45 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/28 18:13:51 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,5 @@ void check_leaks();
 
 // char	*saving(char *buf, char *tmp);
 
-void	*ft_calloc(size_t count, size_t size);
+int	ft_isascii(int c);
 #endif
