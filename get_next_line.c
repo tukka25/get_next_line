@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/28 22:15:49 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/11/29 20:22:57 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*joining(char *str, char *buf, char *tmp, int j)
 		// printf("str = %s\n", str);
 		// printf("1str = %p", str);
 		tmp2 = ft_strjoin(str, f);
-		// printf("1tmp2 = %p\n", tmp2);
+		// printf("1tmp2 = %s\n", tmp2);
 		i = ft_strlen(tmp2);
 		s = malloc(i + 2);
 		if (!s)
@@ -78,6 +78,8 @@ char	*joining(char *str, char *buf, char *tmp, int j)
 		}
 		// s[i] = '\n';
 		s[i] = '\0';
+		if (j == 0)
+			free(tmp);
 		// printf("s = %p\n", s);
 		free(tmp2);
 		free(f);
@@ -155,16 +157,15 @@ char	*saving(char *buf, char *str)
 	while (buf[i] != '\0')
 	{
 		str1[j] = buf[i];
-		// printf("saving\n");
 		// printf("{%c}", str1[j]);
 		j++;
 		i++;
 	}
 	// printf("j = %zu", j);
 	str1[j] = '\0';
-	str = ft_strjoin(str1, str);
+	str = ft_strjoin(str, str1);
 	// printf("str saving = %p\n", str);
-	// free(buf);
+	free(buf);
 	// if (str1 == NULL)
 	// {
 	free(str1);
@@ -190,46 +191,47 @@ char	*get_next_line(int fd)
 	if (tmp)
 	{
 		str = saving(tmp, str);
-		free(tmp);
+		// free(tmp);
+		// printf("saving = %s\n", str);
 	}
-	// printf("str after  = %s\n", str);
 	tmp = malloc(BUFFER_SIZE + 1);
 	if (!tmp)
 		return (NULL);
-	i++;
-	while (ft_strchr(tmp, '\n') == 0 && j >= 0)
+	while (ft_strchr(tmp, '\n') == 0 && j > 0)
 	{
-		printf("here\n");
 		j = read(fd, tmp, BUFFER_SIZE);
 		tmp[j] = '\0';
 		if (j <= -1)
 		{
 			free(tmp);
-			// free(str);
+			free(str);
 			return (NULL);
 		}
 		// printf("j = %d\n", j);
-		// printf("before tmp  = %s\n", tmp);
-		// printf("before str  = %s\n", str);
+		printf("before tmp  = %s\n", tmp);
+		printf("before str  = %s\n", str);
 		str = joining(str, buf, tmp, j);
-		if (j == 0)
+		printf("after tmp = %s\n", tmp);
+		printf("after str  = %s\n", str);
+		if (*str == '\0')
 		{
-		// printf("on");
 			free(tmp);
 			free(str);
 			return (NULL);
 		}
-		// printf("tmp after  = %s\n", tmp);
-		// printf("str after  = %s\n", str);
-		i++;
 	}
-	
+	if (*str == '\0' || j == 0)
+	{
+		free(tmp);
+		free(str);
+		return (NULL);
+	}
 	return (str);
 }
 
 int main()
 {
-	int i = 0;
+	// int i = 0;
 	int fd = open("f2.txt", O_RDONLY);
 	char *line = get_next_line(fd);
 	// free(line);
