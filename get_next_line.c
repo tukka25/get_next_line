@@ -6,9 +6,11 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/29 20:22:57 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/05 22:21:29 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "get_next_line.h"
 
 #include "get_next_line.h"
 
@@ -208,11 +210,11 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 		// printf("j = %d\n", j);
-		printf("before tmp  = %s\n", tmp);
-		printf("before str  = %s\n", str);
+		// printf("before tmp  = %s\n", tmp);
+		// printf("before str  = %s\n", str);
 		str = joining(str, buf, tmp, j);
-		printf("after tmp = %s\n", tmp);
-		printf("after str  = %s\n", str);
+		// printf("after tmp = %s\n", tmp);
+		// printf("after str  = %s\n", str);
 		if (*str == '\0')
 		{
 			free(tmp);
@@ -220,7 +222,7 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 	}
-	if (*str == '\0' || j == 0)
+	if (*str == '\0' && j == 1)
 	{
 		free(tmp);
 		free(str);
@@ -229,30 +231,30 @@ char	*get_next_line(int fd)
 	return (str);
 }
 
-int main()
-{
-	// int i = 0;
-	int fd = open("f2.txt", O_RDONLY);
-	char *line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// check_leaks();
-	while (line)
-	{
-		printf("%s", line);
-		free(line);
-		line = get_next_line(fd);
-	}
-	// free(line);
-	close (fd);
-}
+// int main()
+// {
+// 	// int i = 0;
+// 	int fd = open("f2.txt", O_RDONLY);
+// 	char *line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// check_leaks();
+// 	while (line)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+// 	// free(line);
+// 	close (fd);
+// }

@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/11/29 17:35:55 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/05 19:02:20 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,8 @@ int		ft_strchr(char *s, int c);
 
 char	*ignoring(char *tmp);
 
-void check_leaks();
+// void check_leaks();
 
-void	*ft_calloc(size_t count, size_t size);
+char	*ft_strjoin_original(char const *s1, char const *s2);
 
-int	ft_isascii(int c);
 #endif
