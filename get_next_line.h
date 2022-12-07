@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/05 19:02:20 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/07 15:52:06 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,7 @@ char	*ignoring(char *tmp);
 // void check_leaks();
 
 char	*ft_strjoin_original(char const *s1, char const *s2);
+
+char	*saving(char *buf, char *str);
 
 #endif
