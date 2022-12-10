@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/07 15:52:06 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/10 16:27:18 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ size_t	ft_strlen(const char *str);
 
 char	*ft_strjoin(char *s1, char *s2);
 
-// char	*joining(char *str, char *buf, char *tmp, int j);
+char	*joining(char *str, char *tmp, int j);
 
 char	*rest_less(char *buf, int j);
 
@@ -37,10 +37,12 @@ int		ft_strchr(char *s, int c);
 
 char	*ignoring(char *tmp);
 
-// void check_leaks();
+char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 char	*ft_strjoin_original(char const *s1, char const *s2);
 
-char	*saving(char *buf, char *str);
+void	check_leaks();
+
+char	*saving(char *buf);
 
 #endif

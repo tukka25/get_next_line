@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/07 21:40:50 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/10 22:33:05 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,43 +53,63 @@ char	*joining(char *str, char *tmp, int j)
 {
 	int		i;
 	char	*tmp2;
-	static char	*s;
+	char	*s;
 	char	*f;
 	
 	i = 0;
 	f = ft_strdup(tmp);
 	// printf("f = %p\n", f);
-	if (s)
-		str = ft_strjoin(s, str);
+	// if (buf && )
+	// {
+		// printf("sav\n");
+	// 	str = ft_strjoin(str, buf);
+	// }
 	if (ft_strchr(tmp, '\n') != 0)
 	{
 		tmp2 = ft_strjoin(str, f);
-		str = malloc(ft_strlen(tmp2) + 2);
+		// printf("tmp2 = %p\n", tmp2);
+		s = malloc(ft_strlen(tmp2) + 2);
+		// printf("str nl = %p\n", str);
 		while (tmp2[i] != '\0')
 		{
-			str[i] = tmp2[i];
+			s[i] = tmp2[i];
 			i++;
 		}
-		str[i] = '\n';
-		str[i + 1] = '\0';
-		s = saving(f, str);
-		// printf("s = %s\n", s);
+		s[i] = '\n';
+		s[i + 1] = '\0';
 		free(f);
-		// free(tmp);
+		// free(str);
 		free(tmp2);
-		return (str);
+		return (s);
 	}
-	else if (j > 0)
+	else if (j == BUFFER_SIZE)
 	{
-		str = ft_strjoin(str, f);
+		s = ft_strjoin(str, f);
+		// printf("str or = %p\n", str);
 		free(f);
 		// free(tmp);
-		return (str);
+		return (s);
 	}
+	else if (j < BUFFER_SIZE && j != 0)
+	{
+		tmp2 = rest_less(f, j);
+		// printf("tmp2 rest = %p\n", tmp2);
+		s = ft_strjoin(str, tmp2);
+		// printf("str rest = %s\n", str);
+		// if (str != NULL)
+		// free(str);
+		free(tmp2);
+		// free(tmp);
+		free(str);
+		free(f);
+		return (s);
+	}
+	free(f);
+	free(tmp);
 	return (str);
 }
 
-char	*saving(char *buf, char *str)
+char	*saving(char *buf)
 {
 	char		*str1;
 	int			i;
@@ -100,6 +120,8 @@ char	*saving(char *buf, char *str)
 	j = ft_strlen(buf);
 	buf[j] = '\0';
 	// printf("buf saving = %p\n", buf);
+	// if (!buf[0])
+	// 	return (NULL);
 	while (buf[i] && buf[i] != '\n')
 		i++;
 	// printf("i = %d\n", i);
@@ -120,7 +142,7 @@ char	*saving(char *buf, char *str)
 	// printf("j = %zu", j);
 	str1[j] = '\0';
 	// str = ft_strjoin(str, str1);
-	// printf("str saving = %p\n", str);
+	// printf("str saving = %p\n", str1);
 	// free(buf);
 	// if (str1 == NULL)
 	// {
@@ -129,31 +151,73 @@ char	*saving(char *buf, char *str)
 	// }
 	return (str1);
 }
-// 
+
+char	*del_line(char *str)
+{
+	int		i;
+	// int		j;
+	char	*new_line;
+
+	i = 0;
+	while (str[i] != '\n' && str[i] != '\0')
+		i++;
+	// printf(" len = %zu\n" ,ft_strlen(str));
+	// printf(" i = %d\n", i);
+	// printf("str = %s\n", str);
+	if (ft_strchr(str, '\n') == 0 && ft_strlen(str) == i)
+	{
+		// printf(" i = %d\n", i);
+		return (str);
+	}
+	if (str[i + 1] == '\0')
+		return (str);
+	new_line = ft_substr(str, i + 1, ft_strlen(str));
+	if (!*new_line)
+		return (NULL);
+	free (str);
+	return (new_line);
+}
+
 char	*get_next_line(int fd)
 {
 	char			*tmp;
 	static char		*buf;
 	static char		*str;
 	int				j;
-	int				i;
+	// char			*sav;
 
 	tmp = NULL;
 	// buf = NULL;
 	j = 1;
-	i = 0;
+	// i = 0;
 	if (fd < 0)
 		return (NULL);
+	if (buf)
+	{
+		// printf("str = %s\n", str);
+		str = ft_strjoin(str, buf);
+		if (buf[0] == '\n')
+		{
+			str = ft_substr(buf, 0, 1);
+			buf = ft_substr(buf, 1, ft_strlen(buf) - 1);
+			return (str);
+		}
+		else
+		{
+			// printf("joining str  = %s\n", sav);
+			free(buf);
+		}
+	}
 	tmp = malloc(BUFFER_SIZE + 1);
 	if (!tmp)
 		return (NULL);
 		// printf("bb = %d\n", ft_strchr(tmp,'\n'));
 		// printf("b tmp  = %s\n", tmp);
-	while (ft_strchr(tmp, '\n') == 0 && j > 0)
+	j = read(fd, tmp, BUFFER_SIZE);
+	tmp[j] = '\0';
+	while (j > 0)
 	{
 		// printf("before tmp  = %s\n", tmp);
-		j = read(fd, tmp, BUFFER_SIZE);
-		tmp[j] = '\0';
 		if (j <= -1)
 		{
 			free(tmp);
@@ -161,29 +225,40 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 		// printf("j = %d\n", j);
-		printf("before tmp  = %s\n", tmp);
-		printf("before str  = %s\n", str);
+		// printf("before tmp  = %s\n", tmp);
+		// printf("before str  = %s\n", str);
 		str = joining(str, tmp, j);
-		printf("after str  = %s\n", str);
-		printf("after tmp  = %s\n", tmp);
-		if (j == 0 && !*tmp)
+		// printf("after str  = %s\n", str);
+		// printf("after tmp  = %s\n", tmp);
+		if (ft_strchr(tmp, '\n') != 0)
 		{
-			free(tmp);
-			free(str);
-			return (NULL);
+			buf = saving(tmp);
+			// printf("sav str  = %s\n", buf);
+			str = del_line(str);
+			printf("del str  = %p\n", buf);
+			// free (tmp);
+			return (str);
 		}
-		// j = read(fd, tmp, BUFFER_SIZE);
-		i++;
+		j = read(fd, tmp, BUFFER_SIZE);
+		// i++;
 	}
-	// printf("before tmp  = %s\n", tmp);
-	printf("j = %d\n", j);
-	// printf("after str  = %s\n", str);
-	// if (j == 0 && i == 0)
-	// {
-	// 	free(tmp);
-	// 	free(str);
-	// 	return (NULL);
-	// }
+	// printf("out tmp  = %s\n", tmp);
+	if (j == 0 && *tmp)
+	{
+		// printf("here\n");
+		str = del_line(str);
+		free(tmp);
+		// printf("del = %s\n", str);
+		// return (sav);
+	}
+	if (j == 0 && !*tmp)
+	{
+		// printf("hereee\n");
+		free(tmp);
+		free(str);
+		// free(buf);
+		return (NULL);
+	}
 	// printf("str = %s\n", str);
 	return (str);
 }
@@ -196,22 +271,22 @@ int main()
 	// free(line);
 	// line = get_next_line(fd);
 	// free(line);
-	// // line = get_next_line(fd);
-	// free(line);
-	// // line = get_next_line(fd);
-	// free(line);
-	// // line = get_next_line(fd);
-	// free(line);
-	// // line = get_next_line(fd);
+	// line = get_next_line(fd);
 	// free(line);
 	// line = get_next_line(fd);
-	// check_leaks();
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	check_leaks();
  	while (line)
 	{
 		printf("%s", line);
 		// free(line);
 		line = get_next_line(fd);
 	}
-	free(line);
+	// free(line);
 	close (fd);
 }
