@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/10 22:33:05 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/11 21:42:15 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,11 @@ char	*joining(char *str, char *tmp, int j)
 	// }
 	if (ft_strchr(tmp, '\n') != 0)
 	{
+		// printf("1\n");
 		tmp2 = ft_strjoin(str, f);
 		// printf("tmp2 = %p\n", tmp2);
 		s = malloc(ft_strlen(tmp2) + 2);
-		// printf("str nl = %p\n", str);
+		// printf("str nl = %p\n", s);
 		while (tmp2[i] != '\0')
 		{
 			s[i] = tmp2[i];
@@ -84,26 +85,29 @@ char	*joining(char *str, char *tmp, int j)
 	}
 	else if (j == BUFFER_SIZE)
 	{
+		// printf("2\n");
 		s = ft_strjoin(str, f);
-		// printf("str or = %p\n", str);
+		// printf("str or = %p\n", s);
 		free(f);
-		// free(tmp);
+		// free(str);
 		return (s);
 	}
 	else if (j < BUFFER_SIZE && j != 0)
 	{
+		// printf("3\n");
 		tmp2 = rest_less(f, j);
 		// printf("tmp2 rest = %p\n", tmp2);
 		s = ft_strjoin(str, tmp2);
-		// printf("str rest = %s\n", str);
-		// if (str != NULL)
-		// free(str);
+		// printf("str rest = %p\n", str);
+		// if (str)
+		// 	free(str);
 		free(tmp2);
 		// free(tmp);
 		free(str);
-		free(f);
+		// free(f);
 		return (s);
 	}
+	// printf("4\n");
 	free(f);
 	free(tmp);
 	return (str);
@@ -124,6 +128,8 @@ char	*saving(char *buf)
 	// 	return (NULL);
 	while (buf[i] && buf[i] != '\n')
 		i++;
+	if (i == 0)
+		return (NULL);
 	// printf("i = %d\n", i);
 	len = j - i;
 	// printf("len = %d\n", len);
@@ -154,27 +160,27 @@ char	*saving(char *buf)
 
 char	*del_line(char *str)
 {
-	int		i;
-	// int		j;
-	char	*new_line;
+	size_t		i;
+	char		*new_line;
 
 	i = 0;
+	// printf("str in = %s\n", str);
 	while (str[i] != '\n' && str[i] != '\0')
 		i++;
-	// printf(" len = %zu\n" ,ft_strlen(str));
-	// printf(" i = %d\n", i);
-	// printf("str = %s\n", str);
-	if (ft_strchr(str, '\n') == 0 && ft_strlen(str) == i)
+	if ((ft_strchr(str, '\n') == 0 && ft_strlen(str) == i) || (ft_strchr(str, '\n') == 1 && !str[i + 2]))
 	{
-		// printf(" i = %d\n", i);
+		// printf("here\n");
+		// printf("str in = %s\n", str);
 		return (str);
 	}
+	// printf("1\n");
 	if (str[i + 1] == '\0')
 		return (str);
 	new_line = ft_substr(str, i + 1, ft_strlen(str));
+	// printf("new_line = %s\n", new_line);
 	if (!*new_line)
 		return (NULL);
-	free (str);
+	// free (str);
 	return (new_line);
 }
 
@@ -196,6 +202,7 @@ char	*get_next_line(int fd)
 	{
 		// printf("str = %s\n", str);
 		str = ft_strjoin(str, buf);
+		// printf("str buf = %p\n", str);
 		if (buf[0] == '\n')
 		{
 			str = ft_substr(buf, 0, 1);
@@ -214,29 +221,33 @@ char	*get_next_line(int fd)
 		// printf("bb = %d\n", ft_strchr(tmp,'\n'));
 		// printf("b tmp  = %s\n", tmp);
 	j = read(fd, tmp, BUFFER_SIZE);
+	if (j <= -1)
+	{
+		free(tmp);
+		free(str);
+		return (NULL);
+	}
 	tmp[j] = '\0';
 	while (j > 0)
 	{
 		// printf("before tmp  = %s\n", tmp);
-		if (j <= -1)
-		{
-			free(tmp);
-			free(str);
-			return (NULL);
-		}
+		
 		// printf("j = %d\n", j);
-		// printf("before tmp  = %s\n", tmp);
-		// printf("before str  = %s\n", str);
+		// printf("before tmp  = %p\n", tmp);
+		// printf("before str  = %p\n", str);
 		str = joining(str, tmp, j);
-		// printf("after str  = %s\n", str);
-		// printf("after tmp  = %s\n", tmp);
+		// printf("after str  = %p\n", str);
+		// printf("after tmp  = %p\n", tmp);
 		if (ft_strchr(tmp, '\n') != 0)
 		{
+			// printf("here\n");
 			buf = saving(tmp);
-			// printf("sav str  = %s\n", buf);
+			// if (!*buf)
+			// 	free(buf);
+			// printf("sav str  = %p\n", buf);
 			str = del_line(str);
-			printf("del str  = %p\n", buf);
-			// free (tmp);
+			// printf("del str  = %s\n", buf);
+			free (tmp);
 			return (str);
 		}
 		j = read(fd, tmp, BUFFER_SIZE);
@@ -255,7 +266,7 @@ char	*get_next_line(int fd)
 	{
 		// printf("hereee\n");
 		free(tmp);
-		free(str);
+		// free(str);
 		// free(buf);
 		return (NULL);
 	}
@@ -263,30 +274,30 @@ char	*get_next_line(int fd)
 	return (str);
 }
 
-int main()
-{
-	// int i = 0;
-	int fd = open("f2.txt", O_RDONLY);
-	char *line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	check_leaks();
- 	while (line)
-	{
-		printf("%s", line);
-		// free(line);
-		line = get_next_line(fd);
-	}
-	// free(line);
-	close (fd);
-}
+// int main()
+// {
+// 	// int i = 0;
+// 	int fd = open("f2.txt", O_RDONLY);
+// 	char *line = get_next_line(fd);
+// 	free(line);
+// 	line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	check_leaks();
+//  	// while (line)
+// 	// {
+// 		printf("%s", line);
+// 		// free(line);
+// 	// 	line = get_next_line(fd);
+// 	// }
+// 	// free(line);
+// 	close (fd);
+// }
