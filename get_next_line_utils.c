@@ -6,12 +6,26 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/11 21:40:48 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/12 22:25:25 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+int ft_isascii(char *str)
+{
+	int i = 0;
+	if (str == NULL)
+		return(0);
+	while (str[i])
+	{
+		if (str[i] >= 0 && str[i] <= 127)
+			i++;
+		else
+			return 0;
+	}
+	return 1;
+}
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
@@ -68,15 +82,18 @@ char	*ft_strjoin(char *s1, char *s2)
 	str = (char *)malloc(len * sizeof(char) + 1);
 	if (!str)
 		return (0);
+	// printf("s1 = %s\n", s1);
+	// printf("s2 = %s\n", s2);
 	if (s1 != NULL)
 		while (s1[i] != '\0')
 			str[j++] = s1[i++];
+	// printf("i = %d\n", i);
 	i = 0;
 	if (s2 != NULL)
 		while ((s2[i] != '\0' && s2[i] != '\n'))
 			str[j++] = s2[i++];
 	str[j] = '\0';
-	free(s1);
+	// free(s1);
 	return (str);
 }
 

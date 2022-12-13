@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/11 21:37:39 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/13 21:17:22 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <limits.h>
 # include <stdint.h>
 # include <fcntl.h>
+#include <ctype.h>
 
 char	*get_next_line(int fd);
 
@@ -41,8 +42,10 @@ char	*ft_substr(char *s, unsigned int start, size_t len);
 
 char	*ft_strjoin_original(char const *s1, char const *s2);
 
-// void	check_leaks();
+void	check_leaks();
 
-char	*saving(char *buf);
+char	*saving(char *buf, int d);
+
+// char	*handle(char *buf, int j);
 
 #endif

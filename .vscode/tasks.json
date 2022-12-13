@@ -7,8 +7,9 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${file}",
-				"get_next_line_utils.c",
+                "*.c",
+				"-D",
+				"BUFFER_SIZE=1",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
