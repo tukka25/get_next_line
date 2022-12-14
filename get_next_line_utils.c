@@ -6,32 +6,75 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/12 22:25:25 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/14 22:59:42 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int ft_isascii(char *str)
+char	*joining(char *str, char *tmp, int j)
 {
-	int i = 0;
-	if (str == NULL)
-		return(0);
-	while (str[i])
+	int		i;
+	char	*tmp2;
+	char	*s;
+	char	*f;
+	
+	i = 0;
+	f = ft_strdup(tmp);
+	if (ft_strchr(tmp, '\n') != 0)
 	{
-		if (str[i] >= 0 && str[i] <= 127)
+		// printf("1\n");
+		tmp2 = ft_strjoin(str, f);
+		// printf("tmp2 = %s\n", tmp2);
+		// printf("tmp2 = %p\n", tmp2);
+		// printf("l = %zu\n", ft_strlen(tmp2));
+		s = malloc(ft_strlen(tmp2) + 2);
+		// printf("s = %p\n", s);
+		if (!s)
+			return (NULL);
+		// printf("{%c}\n", tmp2[i]);
+		while (tmp2[i] != '\0')
+		{
+			s[i] = tmp2[i];
 			i++;
-		else
-			return 0;
+		}
+		s[i] = '\n';
+		s[i + 1] = '\0';
+		// printf("s = %s\n", s);
+		free(f);
+		free(str);
+		free(tmp2);
+		return (s);
 	}
-	return 1;
+	else if (j == BUFFER_SIZE)
+	{
+		// printf("2\n");
+		s = ft_strjoin(str, f);
+		// printf("s = %s\n", s);
+		free(f);
+		free(str);
+		return (s);
+	}
+	else if (j < BUFFER_SIZE && j != 0)
+	{
+		// printf("3\n");
+		tmp2 = rest_less(f, j);
+		// printf("tmp2 = %s\n", tmp2);
+		s = ft_strjoin(str, tmp2);
+		// printf("s = %s\n", s);
+		free(tmp2);
+		free(str);
+		free(f);
+		return (s);
+	}
+	return (str);
 }
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
 
 	i = 0;
-	if (!str)
+	if (!str || str == NULL)
 		return (0);
 	while (str[i] != '\0')
 	{
@@ -93,6 +136,14 @@ char	*ft_strjoin(char *s1, char *s2)
 		while ((s2[i] != '\0' && s2[i] != '\n'))
 			str[j++] = s2[i++];
 	str[j] = '\0';
+	// if (str[0] == '\0' && *s2 != '\0')
+	// {
+	// 	while (s2[i] != '\0')
+	// 	{
+	// 		str[j++] = s2[i++];
+	// 	}
+	// 	str[j] = '\0';
+	// }
 	// free(s1);
 	return (str);
 }
