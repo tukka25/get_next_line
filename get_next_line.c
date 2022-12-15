@@ -6,11 +6,25 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/15 00:09:27 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/16 03:58:56 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+size_t	ft_strlen_limited_edition(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	if (!str || str == NULL)
+		return (0);
+	while (str[i] != '\0' && str[i] != '\n')
+	{
+		i++;
+	}
+	return (i);
+}
 
 char	*ft_strdup(char *s1)
 {
@@ -86,13 +100,9 @@ char	*saving(char *buf, int d)
 	while (buf[i] && buf[i] != '\n')
 		i++;
 	if (!buf[i])
-	{
-		// printf("on");
 		return (NULL);
-	}
 	if (buf[0] == '\n' && buf[i + 1])
 	{
-		// printf("on");
 		str1 = handle(buf, d);
 		return (str1);
 	}
@@ -114,7 +124,7 @@ char	*saving(char *buf, int d)
 		free (str1);
 		return (NULL);
 	}
-	// printf("j = %d", j);
+	// printf("str sav = %p\n", str1);
 	return (str1);
 }
 
@@ -181,11 +191,11 @@ char	*get_next_line(int fd)
 	if ((j == 0 && *tmp != '\0'))
 	{
 		// printf("on\n");
-		if (*tmp)
+		// if (*tmp)
 			free(tmp);
 		return (str);
 	}
-	else if (j == 0 && *tmp == '\0')
+	else if (j == 0 && *tmp == '\0' && str == NULL)
 	{
 		// printf("off\n");
 		free(tmp);
@@ -193,65 +203,68 @@ char	*get_next_line(int fd)
 		free(buf);
 		return (NULL);
 	}
+		free(tmp);
 	return (str);
 }
 
+int main()
+{
+	check_leaks();
+	int fd = open("f2.txt", O_RDONLY);
+	char *line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// free(line);
+	// line = get_next_line(fd);
+	// printf("join = %s", joining(NULL, "fhvjf", 4));
+	
+ 	while (line)
+	{
+		printf("%s", line);
+		// free(line);
+		line = get_next_line(fd);
+	}
+	// free(line);
+	close (fd);
+}
 
+// // int main()
+// // {
+// // 	char *line;
+// // 	int		i;
+// // 	int		fd;
 
-
-// int main()
-// {
-// 	// int i = 0;
-// 	int fd = open("f2.txt", O_RDONLY);
-// 	char *line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	check_leaks();
-//  	while (line)
-// 	{
+// // 	// fd = open("f2.txt", O_RDONLY);
+// // 	// if (fd == -1)
+// // 	// {
+// 		printf("bad file");
+// // 	// 	return (0);
+// // 	// }
+// // 	// i = 0;
+// // 	// line = NULL;
+// 	printf("%s", saving("kka\n", 4));
+// // 	// while(i < 1)
+// // 	// {
+// // 	// 	line = get_next_line(fd);
 // 		printf("%s", line);
-// 		// free(line);
-// 		line = get_next_line(fd);
-// 	}
-// 	// free(line);
-// 	close (fd);
-// }
-
-// int main()
-// {
-// 	char *line;
-// 	int		i;
-// 	int		fd;
-
-// 	// fd = open("f2.txt", O_RDONLY);
-// 	// if (fd == -1)
-// 	// {
-// 	// 	printf("bad file");
-// 	// 	return (0);
-// 	// }
-// 	// i = 0;
-// 	// line = NULL;
-// 	// printf("%s", saving("kka\n", 4));
-// 	// while(i < 1)
-// 	// {
-// 	// 	line = get_next_line(fd);
-// 	// 	printf("%s", line);
-// 	// 	if (line)
-// 	// 		free(line);
-// 	// 	i++;
-// 	// }
-// 	return (0);
-// }
+// // 	// 	if (line)
+// // 	// 		free(line);
+// // 	// 	i++;
+// // 	// }
+// // 	return (0);
+// // }
 //joining
 //100% zay elfol leaks 
 // 4 or 5 functions every function do one thing only

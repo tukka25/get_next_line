@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/14 22:59:42 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/16 02:50:11 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,24 @@ char	*joining(char *str, char *tmp, int j)
 	{
 		// printf("1\n");
 		tmp2 = ft_strjoin(str, f);
-		// printf("tmp2 = %s\n", tmp2);
-		// printf("tmp2 = %p\n", tmp2);
-		// printf("l = %zu\n", ft_strlen(tmp2));
+		// if (*tmp2 == '\0')
+		// 	free(tmp2);
+		// printf("tmp21 = %p\n", tmp2);
+		// printf("tmp21 = %s", tmp2);
 		s = malloc(ft_strlen(tmp2) + 2);
-		// printf("s = %p\n", s);
+		// if (*tmp2 == '\0')
+		// 	free(tmp2);
 		if (!s)
 			return (NULL);
-		// printf("{%c}\n", tmp2[i]);
-		while (tmp2[i] != '\0')
-		{
+		if (tmp2 != NULL)
+			while (tmp2[i] != '\0')
+			{
 			s[i] = tmp2[i];
 			i++;
-		}
+			}
 		s[i] = '\n';
 		s[i + 1] = '\0';
-		// printf("s = %s\n", s);
+		// printf("s = %zu", ft_strlen(s));
 		free(f);
 		free(str);
 		free(tmp2);
@@ -50,7 +52,7 @@ char	*joining(char *str, char *tmp, int j)
 	{
 		// printf("2\n");
 		s = ft_strjoin(str, f);
-		// printf("s = %s\n", s);
+		// printf("s = %p\n", s);
 		free(f);
 		free(str);
 		return (s);
@@ -59,17 +61,20 @@ char	*joining(char *str, char *tmp, int j)
 	{
 		// printf("3\n");
 		tmp2 = rest_less(f, j);
-		// printf("tmp2 = %s\n", tmp2);
+		// printf("tmp2 = %p\n", tmp2);
 		s = ft_strjoin(str, tmp2);
-		// printf("s = %s\n", s);
+		// printf("s = %p\n", s);
 		free(tmp2);
 		free(str);
 		free(f);
 		return (s);
 	}
+	free(f);
+	free(str);
+	free(tmp);
 	return (str);
 }
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen(char *str)
 {
 	size_t	i;
 
@@ -83,7 +88,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-static int	len_check(char const *s1, char const *s2)
+static int	len_check(char *s1, char *s2)
 {
 	int	len_1;
 	int	len_2;
@@ -94,7 +99,15 @@ static int	len_check(char const *s1, char const *s2)
 	if (s1 == NULL)
 	{
 		len_1 = 0;
-		len_2 = ft_strlen(s2);
+		// printf("s2 l = %zu\n", ft_strlen(NULL));
+		if (ft_strchr(s2, '\n') != 0)
+		{
+			// printf("fuccck me\n");
+			len_2 = ft_strlen_limited_edition(s2);
+			// printf("len = %d\n", len_2);
+		}
+		else
+			len_2 = ft_strlen(s2);
 	}
 	else if (s2 == NULL)
 	{
@@ -122,28 +135,27 @@ char	*ft_strjoin(char *s1, char *s2)
 	i = 0;
 	j = 0;
 	len = len_check(s1, s2);
+	// printf("i = %d\n", len);
 	str = (char *)malloc(len * sizeof(char) + 1);
 	if (!str)
 		return (0);
 	// printf("s1 = %s\n", s1);
 	// printf("s2 = %s\n", s2);
-	if (s1 != NULL)
+	if (s1 != NULL && len > 0)
 		while (s1[i] != '\0')
 			str[j++] = s1[i++];
 	// printf("i = %d\n", i);
 	i = 0;
-	if (s2 != NULL)
+	if (s2 != NULL && len > 0)
 		while ((s2[i] != '\0' && s2[i] != '\n'))
 			str[j++] = s2[i++];
 	str[j] = '\0';
-	// if (str[0] == '\0' && *s2 != '\0')
-	// {
-	// 	while (s2[i] != '\0')
-	// 	{
-	// 		str[j++] = s2[i++];
-	// 	}
-	// 	str[j] = '\0';
-	// }
+	if (*str == '\0')
+	{
+		free(str);
+		return (NULL);
+	}
+	// printf("j = %c\n", str[j]);
 	// free(s1);
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/14 20:18:13 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/15 19:32:41 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 char	*get_next_line(int fd);
 
-size_t	ft_strlen(const char *str);
+size_t	ft_strlen(char *str);
 
 char	*ft_strdup(char *s1);
 
@@ -38,16 +38,14 @@ char	*rest_less(char *buf, int j);
 
 int		ft_strchr(char *s, int c);
 
-char	*ignoring(char *tmp);
-
 char	*ft_substr(char *s, unsigned int start, size_t len);
-
-char	*ft_strjoin_original(char const *s1, char const *s2);
 
 void	check_leaks();
 
 char	*saving(char *buf, int d);
 
 // char	*handle(char *buf, int j);
+
+size_t	ft_strlen_limited_edition(char *str);
 
 #endif
