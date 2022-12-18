@@ -266,3 +266,38 @@ int main()
 	// free(line);
 	close (fd);
 }
+
+char* saving(char* buf, int d) {
+  if (!buf) {
+    return NULL;
+  }
+
+  // Find the index of the first newline character
+  size_t newline_index = 0;
+  while (buf[newline_index] && buf[newline_index] != '\n') {
+    newline_index++;
+  }
+
+  // Check if the newline character was not found or if it's the last character in the buffer
+  if ((!buf[newline_index]) || (newline_index + 1 == d && buf[newline_index] == '\n')) {
+    return NULL;
+  }
+
+  // Use the handle function to remove the first character if it's a newline character and there are more characters in the buffer
+  if (buf[0] == '\n' && buf[newline_index + 1]) {
+    return handle(buf, d);
+  }
+
+  // Allocate a new string to hold the part of the buffer after the newline character
+  size_t len = strlen(buf) - newline_index - 1;
+  char* str1 = malloc(len + 1);
+  if (!str1) {
+    return NULL;
+  }
+
+  // Copy the part of the buffer after the newline character into the new string
+  memcpy(str1, buf + newline_index + 1, len);
+  str1[len] = '\0';
+
+  return str1;
+}

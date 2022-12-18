@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/16 19:26:55 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/19 00:19:53 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,18 @@ char	*handle(char *buf, int j)
 char	*saving(char *buf, int d)
 {
 	char		*str1;
-	static int	g;
 	int			i;
 	size_t		j;
+	int			v;
 	size_t		len;
 
 	i = 0;
+	v = 0;
 	if (!buf)
 		return (NULL);
 	j = ft_strlen(buf);
+	// printf("j = %zu", j);
+	// printf("buf sav = %s\n", buf);
 	while (buf[i] && buf[i] != '\n')
 		i++;
 	// printf("i = %d\n", i);
@@ -115,47 +118,67 @@ char	*saving(char *buf, int d)
 		// printf("str1 = %s", str1);
 		return (str1);
 	}
-	// else if (d < BUFFER_SIZE && ft_strchr(buf, '\n') != 0)
+	// if (d < BUFFER_SIZE)
 	// {
-	// 	g = i;
-	// 	buf = ft_strdup(buf);
-	// 	while (buf[g] != '\n' && buf[g])
-	// 		g++;
-	// 	printf("g = %d\n", g);
-	// 	while (buf[g] != '\n' && buf [g])
+	// 	j = 0;
+	// 	// printf("heheh i = %d\n", i);
+	// 	i++;
+	// 	len = i;
+	// 	while (buf[i] && buf[i] != '\n')
 	// 		i++;
-	// 	str1 = ft_substr(buf, g + 1, i);
-	// 	printf("str1 = %s\n", str1);
-	// 	// buf = ft_substr(buf, g + 1, ft_strlen(buf));
+	// 	i++;
+	// 	v = i;
+	// 	while(buf[i] && buf[i] != '\n')
+	// 	{
+	// 		j++;
+	// 		i++;
+	// 	}
+	// 	// printf("i = %d\n", i);
+	// 	str1 = ft_substr(buf, len, j);
+	// 	// printf("str1 sub = [[%s]]\n", str1);
+	// 	g = ft_strdup(buf);
+	// 	// printf("buf sav = {[%s]}\n", g);
+	// 	// free(buf);
+	// 	// // buf = NULL;
+	// 	buf = ft_substr(g, v, ft_strlen(g));
+	// 	// printf("buf after = [[[[%s]]]]\n",buf);
 	// 	return (str1);
 	// }
+	// printf("buf i = {%c}\n", buf[i]);
+	// printf("buf i + 1 = {%c}\n", buf[i + 1]);
+	// if (buf[i] == '\n' && buf[i + 1] == '\n' && buf[i + 1] == '\n')
+	// 	i++;
+	i++;
 	len = j - i;
+	// printf("len = %zu\n", len);
 	str1 = malloc(len + 1);
 	if (!str1)
 		return (NULL);
 	j = 0;
-	i++;
 	while (buf[i] != '\0')
 	{
 		str1[j] = buf[i];
+		// printf("str = {%c}\n", str1[j]);
 		j++;
 		i++;
 	}
 	str1[j] = '\0';
+	// printf("ft_l = %zu\n", ft_strlen(str1));
 	if (*str1 == '\0')
 	{
 		free (str1);
 		return (NULL);
 	}
-	// printf("str sav = %p\n", str1);
+	// printf("str sav = %s\n", str1);
 	return (str1);
 }
 
 char	*get_next_line(int fd)
 {
-	char			*tmp;
+	static char			*tmp;
 	static char		*buf;
 	char			*str;
+	char			*sav;
 	int				j;
 	
 	str = NULL;
@@ -170,7 +193,10 @@ char	*get_next_line(int fd)
 		if (buf[0] == '\n')
 		{
 			str = ft_substr(buf, 0, 1);
-			buf = ft_substr(buf, 1, ft_strlen(buf) - 1);
+			sav = ft_strdup(buf);
+			free(buf);
+			buf = ft_substr(sav, 1, ft_strlen(sav) - 1);
+			free(sav);
 			return (str);
 		}
 		else
@@ -201,8 +227,8 @@ char	*get_next_line(int fd)
 		// printf("before tmp  = %s\n", tmp);
 		// printf("before str  = %s\n", str);
 		str = joining(str, tmp, j);
-		// printf("after str  = %s\n", str);
-		// printf("after tmp  = %s\n", tmp);
+		// printf("after str  = {{{%s}}}\n", str);
+		// printf("after tmp  = {{{%s}}}\n", tmp);
 		if (ft_strchr(tmp, '\n') != 0)
 		{
 			buf = saving(tmp, j);
@@ -232,38 +258,37 @@ char	*get_next_line(int fd)
 	return (str);
 }
 
-int main()
-{
-	
-	int fd = open("f2.txt", O_RDONLY);
-	char *line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// free(line);
-	// line = get_next_line(fd);
-	// printf("join = %s", joining(NULL, "fhvjf", 4));
-	check_leaks();
- 	while (line)
-	{
-		printf("%s", line);
-		// free(line);
-		line = get_next_line(fd);
-	}
-	// free(line);
-	close (fd);
-}
+// int main()
+// {
+// 	int fd = open("f2.txt", O_RDONLY);
+// 	char *line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// printf("join = %s", joining(NULL, "fhvjf", 4));
+// 	// check_leaks();
+//  	while (line)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+// 	free(line);
+// 	close (fd);
+// }
 
 // // int main()
 // // {
