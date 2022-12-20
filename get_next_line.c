@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/19 00:19:53 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/20 20:28:04 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,46 +108,32 @@ char	*saving(char *buf, int d)
 	// printf("i = %d\n", i);
 	if ((!buf[i]) || (i + 1 == d && buf[i] == '\n'))
 	{
-		// printf("first\n");
+		// printf("\nfirst\n");
 		return (NULL);
 	}
 	if (buf[0] == '\n' && buf[i + 1])
 	{
-		// printf("fffffffffff\n");
+		// printf("\nfffffffffff\n");
 		str1 = handle(buf, d);
 		// printf("str1 = %s", str1);
 		return (str1);
 	}
-	// if (d < BUFFER_SIZE)
+	// if (j == 0 && buf != NULL)
 	// {
-	// 	j = 0;
-	// 	// printf("heheh i = %d\n", i);
+	// 	// printf("fuck\n");
 	// 	i++;
-	// 	len = i;
 	// 	while (buf[i] && buf[i] != '\n')
-	// 		i++;
 	// 	i++;
-	// 	v = i;
-	// 	while(buf[i] && buf[i] != '\n')
+	// 	while (buf[i] && buf[i] != '\n')
 	// 	{
-	// 		j++;
 	// 		i++;
+	// 		v++;
 	// 	}
-	// 	// printf("i = %d\n", i);
-	// 	str1 = ft_substr(buf, len, j);
-	// 	// printf("str1 sub = [[%s]]\n", str1);
-	// 	g = ft_strdup(buf);
-	// 	// printf("buf sav = {[%s]}\n", g);
-	// 	// free(buf);
-	// 	// // buf = NULL;
-	// 	buf = ft_substr(g, v, ft_strlen(g));
-	// 	// printf("buf after = [[[[%s]]]]\n",buf);
+	// 	str1 = ft_substr(buf, i + 1, v);
+	// 	printf("str1 = %s\n", str1);
 	// 	return (str1);
+		
 	// }
-	// printf("buf i = {%c}\n", buf[i]);
-	// printf("buf i + 1 = {%c}\n", buf[i + 1]);
-	// if (buf[i] == '\n' && buf[i + 1] == '\n' && buf[i + 1] == '\n')
-	// 	i++;
 	i++;
 	len = j - i;
 	// printf("len = %zu\n", len);
@@ -175,42 +161,70 @@ char	*saving(char *buf, int d)
 
 char	*get_next_line(int fd)
 {
-	static char			*tmp;
+	
+	char			*tmp;
 	static char		*buf;
 	char			*str;
 	char			*sav;
 	int				j;
+	// int				i = 0;
 	
 	str = NULL;
-	tmp = NULL;
+	// tmp = NULL;
 	j = 1;
 	if (fd < 0)
 		return (NULL);
+	// printf("buf = {{%s}}\n", buf);
+	// printf("tmp = {{%s}}\n", tmp);
 	if (buf)
 	{
-		// buf = saving(tmp, j);
-		str = ft_strjoin(str, buf);
-		if (buf[0] == '\n')
+		str = joining(str, buf, j);
+		// if (buf[0] == '\n')
+		// {
+		// 	str = ft_substr(buf, 0, 1);
+		// 	sav = ft_strdup(buf);
+		// 	free(buf);
+		// 	buf = ft_substr(sav, 1, ft_strlen(sav) - 1);
+		// 	free(sav);
+		// 	return (str);
+		// }
+		if(ft_strchr(buf, '\n') != 0)
 		{
-			str = ft_substr(buf, 0, 1);
-			sav = ft_strdup(buf);
-			free(buf);
-			buf = ft_substr(sav, 1, ft_strlen(sav) - 1);
+			sav = buf;
+			int n_pos = 0;
+			while (buf[n_pos] && buf[n_pos] != '\n')
+				++n_pos;
+			if (buf[n_pos] == '\n')
+				++n_pos;
+			buf = ft_strdup(&(buf[n_pos]));
 			free(sav);
 			return (str);
 		}
 		else
 		{
-			if (buf != NULL)
-			{
-				free(buf);
-				buf = NULL;
-			}
+			free(str);
+			if (buf[0] == 0)
+{
+free(buf);
+buf =NULL;
+return(NULL);
+}
+			str = ft_strdup(buf);
+			free(buf);
+			buf = NULL;
 		}
+		// {
+		// 	if (buf != NULL)
+		// 	{
+		// 		free(buf);
+		// 		buf = NULL;
+		// 	}
+		// }
+		// printf("tmp = %s\n", tmp);
 	}
 	// buf = saving(tmp, j);
 	// printf("buf = %s\n", buf);
-	tmp = malloc(BUFFER_SIZE + 1);
+	tmp = (char *)malloc(BUFFER_SIZE + 1);
 	if (!tmp)
 		return (NULL);
 	j = read(fd, tmp, BUFFER_SIZE);
@@ -232,8 +246,11 @@ char	*get_next_line(int fd)
 		if (ft_strchr(tmp, '\n') != 0)
 		{
 			buf = saving(tmp, j);
-			// printf("buf in = %s\n", buf);
+			// printf("buf in = {{{{{{%s}}}}}}\n", buf);
 			free (tmp);
+			// printf("buf = %s\n", tmp);
+			// tmp = buf;
+			// printf("buf in = {{%s}}\n", tmp);
 			return (str);
 		}
 		j = read(fd, tmp, BUFFER_SIZE);
@@ -252,6 +269,7 @@ char	*get_next_line(int fd)
 		free(tmp);
 		free(str);
 		free(buf);
+		buf = NULL;
 		return (NULL);
 	}
 		free(tmp);
@@ -262,16 +280,16 @@ char	*get_next_line(int fd)
 // {
 // 	int fd = open("f2.txt", O_RDONLY);
 // 	char *line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
+// 	free(line);
+// 	line = get_next_line(fd);
+// 	free(line);
+// 	line = get_next_line(fd);
+// 	free(line);
+// 	line = get_next_line(fd);
+// 	free(line);
+// 	line = get_next_line(fd);
+// 	free(line);
+// 	line = get_next_line(fd);
 // 	// free(line);
 // 	// line = get_next_line(fd);
 // 	// free(line);
@@ -280,41 +298,15 @@ char	*get_next_line(int fd)
 // 	// line = get_next_line(fd);
 // 	// printf("join = %s", joining(NULL, "fhvjf", 4));
 // 	// check_leaks();
-//  	while (line)
-// 	{
+//  	// while (line)
+// 	// {
 // 		printf("%s", line);
 // 		free(line);
-// 		line = get_next_line(fd);
-// 	}
-// 	free(line);
+// 	// 	line = get_next_line(fd);
+// 	// }
+// 	// free(line);
 // 	close (fd);
 // }
-
-// // int main()
-// // {
-// // 	char *line;
-// // 	int		i;
-// // 	int		fd;
-
-// // 	// fd = open("f2.txt", O_RDONLY);
-// // 	// if (fd == -1)
-// // 	// {
-// 		printf("bad file");
-// // 	// 	return (0);
-// // 	// }
-// // 	// i = 0;
-// // 	// line = NULL;
-// 	printf("%s", saving("kka\n", 4));
-// // 	// while(i < 1)
-// // 	// {
-// // 	// 	line = get_next_line(fd);
-// 		printf("%s", line);
-// // 	// 	if (line)
-// // 	// 		free(line);
-// // 	// 	i++;
-// // 	// }
-// // 	return (0);
-// // }
 //joining
 //100% zay elfol leaks 
 // 4 or 5 functions every function do one thing only

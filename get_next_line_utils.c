@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/16 17:22:56 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/20 20:10:27 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ char	*joining(char *str, char *tmp, int j)
 		free(f);
 		return (s);
 	}
-	free(f);
-	free(str);
-	free(tmp);
+	// free(f);
+	// free(str);
+	// free(tmp);
 	return (str);
 }
 size_t	ft_strlen(char *str)
