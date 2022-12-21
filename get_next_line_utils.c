@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/20 20:10:27 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/21 20:06:06 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,78 +14,62 @@
 
 char	*joining(char *str, char *tmp, int j)
 {
-	int		i;
-	char	*tmp2;
-	char	*s;
-	char	*f;
-	
-	i = 0;
-	f = ft_strdup(tmp);
-	if (ft_strchr(tmp, '\n') != 0)
+	t_vars	vars;
+
+	vars.d = 0;
+	vars.i = 0;
+	vars.f = ft_strdup(tmp);
+	if (ft_strlen_and_ft_strchr(tmp, '\n', 0) != 0)
 	{
-		// printf("1\n");
-		tmp2 = ft_strjoin(str, f);
-		// if (*tmp2 == '\0')
-		// 	free(tmp2);
-		// printf("tmp21 = %p\n", tmp2);
-		// printf("tmp21 = %s", tmp2);
-		s = malloc(ft_strlen(tmp2) + 2);
-		// if (*tmp2 == '\0')
-		// 	free(tmp2);
-		if (!s)
+		vars.tmp2 = ft_strjoin(str, vars.f);
+		vars.s = malloc(ft_strlen_and_ft_strchr(vars.tmp2, 0, 1) + 2);
+		if (!vars.s)
 			return (NULL);
-		if (tmp2 != NULL)
-			while (tmp2[i] != '\0')
-			{
-			s[i] = tmp2[i];
-			i++;
-			}
-		s[i] = '\n';
-		s[i + 1] = '\0';
-		// printf("s = %zu", ft_strlen(s));
-		free(f);
-		free(str);
-		free(tmp2);
-		return (s);
+		if (vars.tmp2 != NULL)
+			while (vars.tmp2[vars.d] != '\0')
+				vars.s[vars.i++] = vars.tmp2[vars.d++];
+		vars.s[vars.i] = '\n';
+		vars.s[vars.i + 1] = '\0';
+		free(vars.tmp2);
 	}
 	else if (j == BUFFER_SIZE)
-	{
-		// printf("2\n");
-		s = ft_strjoin(str, f);
-		// printf("s = %p\n", s);
-		free(f);
-		free(str);
-		return (s);
-	}
+		vars.s = ft_strjoin(str, vars.f);
 	else if (j < BUFFER_SIZE && j != 0)
 	{
-		// printf("3\n");
-		tmp2 = rest_less(f, j);
-		// printf("tmp2 = %p\n", tmp2);
-		s = ft_strjoin(str, tmp2);
-		// printf("s = %p\n", s);
-		free(tmp2);
-		free(str);
-		free(f);
-		return (s);
+		vars.tmp2 = rest_less(vars.f, j);
+		vars.s = ft_strjoin(str, vars.tmp2);
+		free(vars.tmp2);
 	}
-	// free(f);
-	// free(str);
-	// free(tmp);
-	return (str);
+	else
+		return (free(vars.f), str);
+	return (free(vars.f), free(str), vars.s);
 }
-size_t	ft_strlen(char *str)
+
+size_t	ft_strlen_and_ft_strchr(char *str, int c, int n)
 {
+	char	tmp;
 	size_t	i;
 
-	i = 0;
-	if (!str || str == NULL)
-		return (0);
-	while (str[i] != '\0')
+	i = -1;
+	tmp = (char ) c;
+	if (n == 1)
 	{
-		i++;
+		i = 0;
+		if (!str || str == NULL)
+			return (0);
+		while (str[++i] != '\0')
+			;
+		return (i);
 	}
-	return (i);
+	else
+	{
+		if (!str)
+			return (0);
+		while (str[++i] != '\0')
+			if (str[i] == tmp)
+				return (1);
+		return (0);
+	}
 }
 
 static int	len_check(char *s1, char *s2)
@@ -98,26 +82,18 @@ static int	len_check(char *s1, char *s2)
 	len_2 = 0;
 	if (s1 == NULL)
 	{
-		len_1 = 0;
-		// printf("s2 l = %zu\n", ft_strlen(NULL));
-		if (ft_strchr(s2, '\n') != 0)
-		{
-			// printf("fuccck me\n");
-			len_2 = ft_strlen_limited_edition(s2);
-			// printf("len = %d\n", len_2);
-		}
+		if (ft_strlen_and_ft_strchr(s2, '\n', 0) != 0)
+			while (s2[len_2] && s2[len_2] != '\n')
+				len_2++;
 		else
-			len_2 = ft_strlen(s2);
+			len_2 = ft_strlen_and_ft_strchr(s2, 0, 1);
 	}
 	else if (s2 == NULL)
-	{
-		len_2 = 0;
-		len_1 = ft_strlen(s1);
-	}
+		len_1 = ft_strlen_and_ft_strchr(s1, 0, 1);
 	else
 	{
-		len_1 = ft_strlen(s1);
-		len_2 = ft_strlen(s2);
+		len_1 = ft_strlen_and_ft_strchr(s1, 0, 1);
+		len_2 = ft_strlen_and_ft_strchr(s2, 0, 1);
 	}
 	len = len_1 + len_2;
 	return (len);
@@ -135,47 +111,20 @@ char	*ft_strjoin(char *s1, char *s2)
 	i = 0;
 	j = 0;
 	len = len_check(s1, s2);
-	// printf("i = %d\n", len);
 	str = (char *)malloc(len * sizeof(char) + 1);
 	if (!str)
 		return (0);
-	// printf("s1 = %s\n", s1);
-	// printf("s2 = %s\n", s2);
 	if (s1 != NULL && len > 0)
 		while (s1[i] != '\0')
 			str[j++] = s1[i++];
-	// printf("i = %d\n", i);
 	i = 0;
 	if (s2 != NULL && len > 0)
 		while ((s2[i] != '\0' && s2[i] != '\n'))
 			str[j++] = s2[i++];
 	str[j] = '\0';
 	if (*str == '\0')
-	{
-		free(str);
-		return (NULL);
-	}
-	// printf("j = %c\n", str[j]);
-	// free(s1);
+		return (free(str), NULL);
 	return (str);
-}
-
-int	ft_strchr(char *s, int c)
-{
-	int		i;
-	char	tmp;
-
-	i = 0;
-	tmp = (char ) c;
-	if (!s)
-		return (0);
-	while (s[i] != '\0')
-	{
-		if (s[i] == tmp)
-			return (1);
-		i++;
-	}
-	return (0);
 }
 
 char	*ft_substr(char *s, unsigned int start, size_t len)
@@ -186,7 +135,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 
 	if (!s)
 		return (NULL);
-	i = ft_strlen(s);
+	i = ft_strlen_and_ft_strchr(s, 0, 1);
 	j = 0;
 	if (len > i)
 		len = i;
