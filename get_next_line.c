@@ -41,7 +41,9 @@ char	*handle(char *buf, int j)
 	int		i;
 
 	i = 0;
-	while (buf[i - 1] != '\n' && buf[i])
+	while (buf[i] && buf[i] != '\n')
+		i++;
+	if(buf[i] == '\n')
 		i++;
 	tmp = malloc(j - i + 1);
 	if (!tmp)
@@ -142,3 +144,35 @@ char	*get_next_line(int fd)
 	vars.str = reading_loop(vars.tmp, vars.str, &buf, fd);
 	return (free(vars.tmp), vars.str);
 }
+
+// #include <stdio.h>
+// #include <fcntl.h>
+// int main()
+// {
+// 	int fd = open("f2.txt", O_RDONLY);
+// 	char *line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// printf("join = %s", joining(NULL, "fhvjf", 4));
+// 	// check_leaks();
+//  	while (line)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+// 	// free(line);
+// 	close (fd);
+// }

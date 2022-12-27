@@ -53,8 +53,8 @@ size_t	ft_strlen_and_ft_strchr(char *str, int c, int n)
 		i = 0;
 		if (!str || str == NULL)
 			return (0);
-		while (str[++i] != '\0')
-			;
+		while (str[i] != '\0')
+			i++;
 		return (i);
 	}
 	else

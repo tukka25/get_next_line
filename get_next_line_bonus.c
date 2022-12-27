@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
+// # include <limits.h>
 
 char	*rest_less(char *buf, int j)
 {
@@ -41,7 +42,9 @@ char	*handle(char *buf, int j)
 	int		i;
 
 	i = 0;
-	while (buf[i - 1] != '\n' && buf[i])
+	while (buf[i] && buf[i] != '\n')
+		i++;
+	if(buf[i] == '\n')
 		i++;
 	tmp = malloc(j - i + 1);
 	if (!tmp)
@@ -117,7 +120,7 @@ char	*reading_loop(char *tmp, char *str, char **buf, int fd)
 char	*get_next_line(int fd)
 {
 	t_rvars			vars;
-	static char		*buf[OPEN_MAX];
+	static char		*buf[10240];
 
 	vars.str = NULL;
 	vars.tmp = NULL;
@@ -142,3 +145,33 @@ char	*get_next_line(int fd)
 	vars.str = reading_loop(vars.tmp, vars.str, &buf[fd], fd);
 	return (free(vars.tmp), vars.str);
 }
+# include <fcntl.h>
+// int main()
+// {
+// 	int fd = open("f2.txt", O_RDONLY);
+// 	char *line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// printf("join = %s", joining(NULL, "fhvjf", 4));
+// 	// check_leaks();
+//  	while (line)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+// 	// free(line);
+// 	close (fd);
+// }
