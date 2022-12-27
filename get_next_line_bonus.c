@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/27 20:07:14 by abdamoha         ###   ########.fr       */
+/*   Created: 2022/12/27 19:55:10 by abdamoha          #+#    #+#             */
+/*   Updated: 2022/12/27 20:01:41 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,28 +117,28 @@ char	*reading_loop(char *tmp, char *str, char **buf, int fd)
 char	*get_next_line(int fd)
 {
 	t_rvars			vars;
-	static char		*buf;
+	static char		*buf[OPEN_MAX];
 
 	vars.str = NULL;
 	vars.tmp = NULL;
 	vars.n_pos = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (buf)
+	if (buf[fd])
 	{
-		vars.str = joining(vars.str, buf, 1);
-		if (ft_strlen_and_ft_strchr(buf, '\n', 0) != 0)
+		vars.str = joining(vars.str, buf[fd], 1);
+		if (ft_strlen_and_ft_strchr(buf[fd], '\n', 0) != 0)
 		{
-			vars.tmp = buf;
-			while (buf[vars.n_pos] && buf[vars.n_pos] != '\n')
+			vars.tmp = buf[fd];
+			while (buf[fd][vars.n_pos] && buf[fd][vars.n_pos] != '\n')
 				++vars.n_pos;
-			vars.n_pos += (buf[vars.n_pos] == '\n');
-			buf = ft_strdup(&(buf[vars.n_pos]));
+			vars.n_pos += (buf[fd][vars.n_pos] == '\n');
+			buf[fd] = ft_strdup(&(buf[fd][vars.n_pos]));
 			return (free(vars.tmp), vars.str);
 		}
-		if (!check_eof(&vars.str, &buf, NULL, -1))
+		if (!check_eof(&vars.str, &buf[fd], NULL, -1))
 			return (NULL);
 	}
-	vars.str = reading_loop(vars.tmp, vars.str, &buf, fd);
+	vars.str = reading_loop(vars.tmp, vars.str, &buf[fd], fd);
 	return (free(vars.tmp), vars.str);
 }
