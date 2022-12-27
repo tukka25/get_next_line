@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/21 20:05:31 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/27 14:02:13 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ typedef struct s_vars
 	char	*f;
 }	t_vars;
 
+typedef struct read_vars
+{
+	char			*tmp;
+	char			*str;
+	int				n_pos;
+	int				j;
+}	t_rvars;
 char	*get_next_line(int fd);
 
 size_t	ft_strlen_and_ft_strchr(char *str, int c, int n);

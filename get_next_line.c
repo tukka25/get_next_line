@@ -6,32 +6,11 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/21 19:56:33 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/27 15:15:39 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-char	*ft_strdup(char *s1)
-{
-	char	*str;
-	int		i;
-
-	if (s1 == NULL)
-		return (NULL);
-	i = ft_strlen_and_ft_strchr(s1, 0, 1);
-	str = (char *)malloc((i * sizeof(char)) + 1);
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (s1[i] != '\0')
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
-}
 
 char	*rest_less(char *buf, int j)
 {
@@ -82,7 +61,6 @@ char	*saving(char *buf, int d)
 	char		*str1;
 	int			i;
 	size_t		j;
-	size_t		len;
 
 	i = 0;
 	if (!buf)
@@ -91,32 +69,19 @@ char	*saving(char *buf, int d)
 	while (buf[i] && buf[i] != '\n')
 		i++;
 	if ((!buf[i]) || (i + 1 == d && buf[i] == '\n'))
-	{
 		return (NULL);
-	}
 	if (buf[0] == '\n' && buf[i + 1])
-	{
-		str1 = handle(buf, d);
-		return (str1);
-	}
+		return (handle(buf, d));
 	i++;
-	len = j - i;
-	str1 = malloc(len + 1);
-	if (!str1)
-		return (NULL);
+	str1 = malloc(j - i + 1);
 	j = 0;
+	if (!buf[0] || !str1)
+		return (free(str1), NULL);
 	while (buf[i] != '\0')
-	{
-		str1[j] = buf[i];
-		j++;
-		i++;
-	}
+		str1[j++] = buf[i++];
 	str1[j] = '\0';
 	if (*str1 == '\0')
-	{
-		free (str1);
-		return (NULL);
-	}
+		return (free(str1), NULL);
 	return (str1);
 }
 
@@ -180,10 +145,9 @@ char	*get_next_line(int fd)
 		return (free(tmp), free(str), free(buf), NULL);
 	return (free(tmp), str);
 }
-
 // int main()
 // {
-// 	int fd = open("f2.txt", O_RDONLY);
+// 	int fd = open("f.txt", O_RDONLY);
 // 	char *line = get_next_line(fd);
 // 	// free(line);
 // 	// line = get_next_line(fd);
@@ -206,7 +170,7 @@ char	*get_next_line(int fd)
 //  	while (line)
 // 	{
 // 		printf("%s", line);
-// 		free(line);
+// 		// free(line);
 // 		line = get_next_line(fd);
 // 	}
 // 	// free(line);
