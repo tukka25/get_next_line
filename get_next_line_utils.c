@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:33:11 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/27 15:02:30 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/27 19:44:38 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,7 @@ char	*joining(char *str, char *tmp, int j)
 	else if (j == BUFFER_SIZE)
 		vars.s = ft_strjoin(str, vars.f);
 	else if (j < BUFFER_SIZE && j != 0)
-	{
-		vars.tmp2 = rest_less(vars.f, j);
-		vars.s = ft_strjoin(str, vars.tmp2);
-		free(vars.tmp2);
-	}
+			vars.s = check_eof(&str, NULL, &vars, j);
 	else
 		return (free(vars.f), str);
 	return (free(vars.f), free(str), vars.s);
@@ -82,7 +78,8 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	i = 0;
 	j = 0;
-	str = malloc((ft_strlen_and_ft_strchr(s1, 0, 1) + ft_strlen_and_ft_strchr(s2, 0, 1)) * sizeof(char) + 1);
+	str = malloc((ft_strlen_and_ft_strchr(s1, 0, 1)
+				+ ft_strlen_and_ft_strchr(s2, 0, 1)) * sizeof(char) + 1);
 	if (!str)
 		return (0);
 	if (s1 != NULL)
@@ -117,4 +114,22 @@ char	*ft_strdup(char *s1)
 	}
 	str[i] = '\0';
 	return (str);
+}
+
+void	*check_eof(char **str, char **buf, t_vars *vars, int p)
+{
+	if (p == -1)
+	{
+		free(*str);
+		if (*buf[0] == 0)
+			return (free(*buf), NULL);
+		*str = ft_strdup(*buf);
+		free(*buf);
+		*buf = NULL;
+		return (str);
+	}
+	vars->tmp2 = rest_less(vars->f, p);
+	vars->s = ft_strjoin(*str, vars->tmp2);
+	free(vars->tmp2);
+	return (vars->s);
 }

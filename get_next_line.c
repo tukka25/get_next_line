@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/27 15:15:39 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/27 19:41:30 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,43 +85,11 @@ char	*saving(char *buf, int d)
 	return (str1);
 }
 
-char	*get_next_line(int fd)
+char	*reading_loop(char *tmp, char *str, char **buf, int fd)
 {
-	char			*tmp;
-	static char		*buf;
-	char			*str;
-	int				n_pos;
-	int				j;
+	int	j;
 
-	str = NULL;
-	tmp = NULL;
-	n_pos = 0;
-	j = 1;
-	if (fd < 0)
-		return (NULL);
-	if (buf)
-	{
-		str = joining(str, buf, j);
-		if (ft_strlen_and_ft_strchr(buf, '\n', 0) != 0)
-		{
-			tmp = buf;
-			while (buf[n_pos] && buf[n_pos] != '\n')
-				++n_pos;
-			if (buf[n_pos] == '\n')
-				++n_pos;
-			buf = ft_strdup(&(buf[n_pos]));
-			return (free(tmp), str);
-		}
-		else
-		{
-			free(str);
-			if (buf[0] == 0)
-				return (free(buf), NULL);
-			str = ft_strdup(buf);
-			free(buf);
-			buf = NULL;
-		}
-	}
+	j = 0;
 	tmp = (char *)malloc(BUFFER_SIZE + 1);
 	if (!tmp)
 		return (NULL);
@@ -134,7 +102,7 @@ char	*get_next_line(int fd)
 		str = joining(str, tmp, j);
 		if (ft_strlen_and_ft_strchr(tmp, '\n', 0) != 0)
 		{
-			buf = saving(tmp, j);
+			*buf = saving(tmp, j);
 			return (free(tmp), str);
 		}
 		j = read(fd, tmp, BUFFER_SIZE);
@@ -145,9 +113,39 @@ char	*get_next_line(int fd)
 		return (free(tmp), free(str), free(buf), NULL);
 	return (free(tmp), str);
 }
+
+char	*get_next_line(int fd)
+{
+	t_rvars			vars;
+	static char		*buf;
+
+	vars.str = NULL;
+	vars.tmp = NULL;
+	vars.n_pos = 0;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (buf)
+	{
+		vars.str = joining(vars.str, buf, 1);
+		if (ft_strlen_and_ft_strchr(buf, '\n', 0) != 0)
+		{
+			vars.tmp = buf;
+			while (buf[vars.n_pos] && buf[vars.n_pos] != '\n')
+				++vars.n_pos;
+			vars.n_pos += (buf[vars.n_pos] == '\n');
+			buf = ft_strdup(&(buf[vars.n_pos]));
+			return (free(vars.tmp), vars.str);
+		}
+		if (!check_eof(&vars.str, &buf, NULL, -1))
+			return (NULL);
+	}
+	vars.str = reading_loop(vars.tmp, vars.str, &buf, fd);
+	return (free(vars.tmp), vars.str);
+}
+
 // int main()
 // {
-// 	int fd = open("f.txt", O_RDONLY);
+// 	int fd = open("f2.txt", O_RDONLY);
 // 	char *line = get_next_line(fd);
 // 	// free(line);
 // 	// line = get_next_line(fd);
