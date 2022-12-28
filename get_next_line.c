@@ -41,9 +41,15 @@ char	*handle(char *buf, int j)
 	int		i;
 
 	i = 0;
+<<<<<<< HEAD
 	while (buf[i] != '\n' && buf[i])
 		i++;
 	if (buf[i] == '\n')
+=======
+	while (buf[i] && buf[i] != '\n')
+		i++;
+	if(buf[i] == '\n')
+>>>>>>> 98d856e47c6bc41b957d4d6ce6c058cfc83e1e71
 		i++;
 	tmp = malloc(j - i + 1);
 	if (!tmp)
@@ -149,7 +155,11 @@ char	*get_next_line(int fd)
 // #include <fcntl.h>
 // int main()
 // {
+<<<<<<< HEAD
 // 	int fd = open("text.txt", O_RDONLY);
+=======
+// 	int fd = open("f2.txt", O_RDONLY);
+>>>>>>> 98d856e47c6bc41b957d4d6ce6c058cfc83e1e71
 // 	char *line = get_next_line(fd);
 // 	// free(line);
 // 	// line = get_next_line(fd);
