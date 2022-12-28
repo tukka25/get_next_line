@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/27 20:07:14 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/28 15:59:14 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ char	*handle(char *buf, int j)
 	int		i;
 
 	i = 0;
-	while (buf[i - 1] != '\n' && buf[i])
+	while (buf[i] != '\n' && buf[i])
+		i++;
+	if (buf[i] == '\n')
 		i++;
 	tmp = malloc(j - i + 1);
 	if (!tmp)
@@ -136,9 +138,41 @@ char	*get_next_line(int fd)
 			buf = ft_strdup(&(buf[vars.n_pos]));
 			return (free(vars.tmp), vars.str);
 		}
-		if (!check_eof(&vars.str, &buf, NULL, -1))
+		if (!check_eof(&vars.str, &buf, NULL, -1) && buf == NULL)
 			return (NULL);
 	}
 	vars.str = reading_loop(vars.tmp, vars.str, &buf, fd);
 	return (free(vars.tmp), vars.str);
 }
+
+// #include <stdio.h>
+// #include <fcntl.h>
+// int main()
+// {
+// 	int fd = open("text.txt", O_RDONLY);
+// 	char *line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// free(line);
+// 	// line = get_next_line(fd);
+// 	// printf("join = %s", joining(NULL, "fhvjf", 4));
+// 	// check_leaks();
+//  	while (line)
+// 	{
+// 		printf("%s", line);
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+// 	// free(line);
+// 	close (fd);
+// }

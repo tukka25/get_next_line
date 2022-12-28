@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 19:55:10 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/27 20:01:41 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/28 14:54:58 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ char	*handle(char *buf, int j)
 	int		i;
 
 	i = 0;
-	while (buf[i - 1] != '\n' && buf[i])
+	while (buf[i] != '\n' && buf[i])
+		i++;
+	if (buf[i] == '\n')
 		i++;
 	tmp = malloc(j - i + 1);
 	if (!tmp)
@@ -117,7 +119,7 @@ char	*reading_loop(char *tmp, char *str, char **buf, int fd)
 char	*get_next_line(int fd)
 {
 	t_rvars			vars;
-	static char		*buf[OPEN_MAX];
+	static char		*buf[10240];
 
 	vars.str = NULL;
 	vars.tmp = NULL;
@@ -136,7 +138,7 @@ char	*get_next_line(int fd)
 			buf[fd] = ft_strdup(&(buf[fd][vars.n_pos]));
 			return (free(vars.tmp), vars.str);
 		}
-		if (!check_eof(&vars.str, &buf[fd], NULL, -1))
+		if (!check_eof(&vars.str, &buf[fd], NULL, -1) && buf == NULL)
 			return (NULL);
 	}
 	vars.str = reading_loop(vars.tmp, vars.str, &buf[fd], fd);
