@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:29:40 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/27 19:52:11 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/28 22:02:12 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
-# include <stdint.h>
+// # include <stdint.h>
 
 typedef struct s_vars
 {
