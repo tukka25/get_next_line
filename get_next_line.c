@@ -6,7 +6,7 @@
 /*   By: abdamoha <abdamoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 14:45:07 by abdamoha          #+#    #+#             */
-/*   Updated: 2022/12/28 18:40:19 by abdamoha         ###   ########.fr       */
+/*   Updated: 2022/12/29 17:44:39 by abdamoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,35 +144,3 @@ char	*get_next_line(int fd)
 	vars.str = reading_loop(vars.tmp, vars.str, &buf, fd);
 	return (free(vars.tmp), vars.str);
 }
-
-// #include <stdio.h>
-// #include <fcntl.h>
-// int main()
-// {
-// 	int fd = open("text.txt", O_RDONLY);
-// 	char *line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// free(line);
-// 	// line = get_next_line(fd);
-// 	// printf("join = %s", joining(NULL, "fhvjf", 4));
-// 	// check_leaks();
-//  	while (line)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 		line = get_next_line(fd);
-// 	}
-// 	// free(line);
-// 	close (fd);
-// }
